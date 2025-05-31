@@ -1,7 +1,5 @@
 # mecuido app
 
-# MeCuidoApp
-
 App desenvolvido em React Native com Expo SDK v53.0.0 focado em monitoramento de saúde e bem-estar.  
 Este projeto inclui um carrossel com cards de ingestão de água, IMC e sono, além de telas detalhadas para cada um desses tópicos, permitindo visualização e filtro de dados personalizados.
 
