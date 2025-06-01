@@ -27,7 +27,6 @@ export const lightTheme = {
   black: '#000000',
   error: '#FF5252',
   success: '#4CAF50',
-  pickerBackground: '#f0f0f0',
 };
 
 export const darkTheme = {
@@ -64,5 +63,4 @@ export const darkTheme = {
   black: '#000000',
   error: '#FF6B6B',
   success: '#81C784',
-  pickerBackground: '#191a19',
 };

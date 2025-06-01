@@ -7,7 +7,7 @@ export default function getStyles(theme) {
   const imageWidth = cardWidth * 0.4;
   return StyleSheet.create({
     container: {
-      marginTop: 8,
+      marginTop: 16,
     },
     card: {
       backgroundColor: theme.greetingCard,
@@ -34,14 +34,14 @@ export default function getStyles(theme) {
       fontStyle: 'bold',
     },
     cardTitle: {
-      fontSize: 18,
+      fontSize: 14,
       fontWeight: '700',
       color: theme.textPrimary,
       marginBottom: 10,
     },
     body: {
       flexDirection: 'row',
- 
+      justifyContent: 'space-between',
       alignItems: 'center',
     },
     infoSection: {
@@ -71,6 +71,7 @@ export default function getStyles(theme) {
     pagination: {
       flexDirection: 'row',
       justifyContent: 'center',
+      marginTop: 10,
     },
     dot: {
       width: 10,
@@ -78,7 +79,6 @@ export default function getStyles(theme) {
       borderRadius: 5,
       backgroundColor: theme.brandSoft,
       marginHorizontal: 5,
-      marginTop: 20,
       opacity: 0.5,
     },
 
@@ -93,27 +93,27 @@ export default function getStyles(theme) {
     },
     valueAguaUnit: {
       fontSize: 18,
-      fontWeight: 'normal',
+      fontWeight: '500',
       color: theme.textSecondary,
     },
     valueImcNumber: {
       fontSize: 26,
       fontWeight: 'bold',
-      color: theme.primary,
+      color: theme.success,
     },
     valueImcUnit: {
       fontSize: 18,
       fontWeight: 'normal',
-      color: theme.textSecondary,
+      color: theme.textPrimary,
     },
     valueSonoNumber: {
       fontSize: 28,
       fontWeight: 'bold',
-      color: theme.primary,
+      color: theme.warning,
     },
     valueSonoUnit: {
       fontSize: 18,
-      fontWeight: 'normal',
+      fontWeight: '400',
       color: theme.textSecondary,
     },
   });

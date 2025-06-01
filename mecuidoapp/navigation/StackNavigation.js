@@ -15,7 +15,6 @@ import EsqueciSenha from '../components/screens/EsqueciSenha';
 import AguaDetalhes from '../components/screens/AguaDetalhes';
 import ImcDetalhes from '../components/screens/ImcDetalhes';
 import SonoDetalhes from '../components/screens/SonoDetalhes';
-import EditarInfoCards from '../components/screens/EditarInfoCards';
 
 const Stack = createNativeStackNavigator();
 
@@ -95,11 +94,6 @@ export default function StackNavigation() {
         name="SonoDetalhes"
         component={SonoDetalhes}
         options={{ title: 'Detalhes do Sono' }}
-      />
-      <Stack.Screen
-        name="EditarInfoCards"
-        component={EditarInfoCards}
-        options={{ title: 'Alterar Valores' }}
       />
     </Stack.Navigator>
   );

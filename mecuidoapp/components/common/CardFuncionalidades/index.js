@@ -1,12 +1,5 @@
 import React, { useContext, useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { UserContext } from '../../../context/UserContext';
 import { ThemeContext } from '../../../context/ThemeContext';
 import getStyles from './styles';
@@ -31,27 +24,20 @@ function calcularIdade(dataNascimento) {
 
 function faixaSonoPorIdade(idade) {
   if (idade === null) return { min: 7, max: 9, desc: 'Adulto (18 a 60 anos)' };
-  if (idade <= 0.25)
-    return { min: 14, max: 17, desc: 'Recém-nascidos (0-3 meses)' };
-  if (idade <= 1) return { min: 12, max: 15, desc: 'Bebês (4-11 meses)' };
-  if (idade <= 2)
-    return { min: 11, max: 14, desc: 'Primeira Infância (1-2 anos)' };
-  if (idade <= 5)
-    return { min: 10, max: 13, desc: 'Idade Pré-Escolar (3-5 anos)' };
-  if (idade <= 12)
-    return { min: 9, max: 12, desc: 'Idade Escolar (6-12 anos)' };
-  if (idade <= 17)
-    return { min: 8, max: 10, desc: 'Adolescentes (13-17 anos)' };
-  if (idade <= 60) return { min: 7, max: 9, desc: 'Adultos (18-60 anos)' };
-  if (idade <= 64) return { min: 7, max: 9, desc: 'Adultos (61-64 anos)' };
-  return { min: 7, max: 8, desc: 'Adultos (65+ anos)' };
+  if (idade <= 1) return { min: 12, max: 16, desc: 'Bebê (0-1 ano)' };
+  if (idade <= 2) return { min: 11, max: 14, desc: 'Criança pequena (1-2 anos)' };
+  if (idade <= 5) return { min: 10, max: 13, desc: 'Pré-escolar (3-5 anos)' };
+  if (idade <= 12) return { min: 9, max: 12, desc: 'Criança (6-12 anos)' };
+  if (idade <= 17) return { min: 8, max: 10, desc: 'Adolescente (13-17 anos)' };
+  if (idade <= 60) return { min: 7, max: 9, desc: 'Adulto (18-60 anos)' };
+  return { min: 7, max: 8, desc: 'Idoso (60+ anos)' };
 }
 
 export default function CardCarrossel() {
   const { user } = useContext(UserContext);
   const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // >>> faltava!
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -65,7 +51,9 @@ export default function CardCarrossel() {
   const idade = useMemo(() => calcularIdade(dataNascimento), [dataNascimento]);
   const sonoIdeal = useMemo(() => faixaSonoPorIdade(idade), [idade]);
 
-  const aguaRecomendadaMl = peso * 35;
+  const fatorAgua = sexo === 'M' ? 40 : 35;
+  const aguaRecomendadaMl = peso * fatorAgua;
+  const aguaRecomendadaCopos = (aguaRecomendadaMl / 250).toFixed(1);
   const aguaRecomendadaLitros = (aguaRecomendadaMl / 1000).toFixed(2);
 
   const imc = peso && altura ? (peso / (altura / 100) ** 2).toFixed(1) : '--';
@@ -75,46 +63,16 @@ export default function CardCarrossel() {
   const imcCategoria =
     imc === '--'
       ? '--'
-      : idade >= 18
-      ? imc < 18.5
-        ? 'Abaixo do peso normal'
-        : imc <= 24.9
-        ? 'Peso normal'
-        : imc <= 29.9
-        ? 'Sobrepeso'
-        : imc <= 34.9
-        ? 'Obesidade Classe I'
-        : imc <= 39.9
-        ? 'Obesidade Classe II'
-        : 'Obesidade Classe III'
-      : sexo === 'M'
-      ? idade <= 12
-        ? imc > 19.9
-          ? 'Obesidade'
-          : imc > 16.9
-          ? 'Sobrepeso'
-          : 'Normal'
-        : imc > 22.7
-        ? 'Obesidade'
-        : imc > 19.9
-        ? 'Sobrepeso'
-        : 'Normal'
-      : idade <= 12
-      ? imc > 18.9
-        ? 'Obesidade'
-        : imc > 16.9
-        ? 'Sobrepeso'
-        : 'Normal'
-      : imc > 23.9
-      ? 'Obesidade'
-      : imc > 20.9
+      : imc < 18.5
+      ? 'Abaixo do peso normal'
+      : imc <= 24.9
+      ? 'Peso normal'
+      : imc <= 29.9
       ? 'Sobrepeso'
-      : 'Normal';
+      : 'Obesidade';
 
   const sonoCategoria =
-    sono >= sonoIdeal.min && sono <= sonoIdeal.max
-      ? 'Suficiente'
-      : 'Insuficiente';
+    sono >= sonoIdeal.min && sono <= sonoIdeal.max ? 'Suficiente' : 'Insuficiente';
 
   const aguaLitros = aguaConsumida ? (aguaConsumida * 0.25).toFixed(1) : '--';
 
@@ -134,14 +92,8 @@ export default function CardCarrossel() {
   }
 
   return (
-    <View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: 16,
-        }}>
+    <View style={{ height: cardHeight + 80, marginTop: 16 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8, paddingHorizontal: 16 }}>
         <Text style={styles.carouselTitlePrefix}>
           {['Ingestão de ', 'Índice de ', 'Gestão do '][currentIndex]}
           <Text
@@ -152,14 +104,8 @@ export default function CardCarrossel() {
             {['água', 'massa corporal', 'sono'][currentIndex]}
           </Text>
         </Text>
-
-        <TouchableOpacity onPress={handleIconPress}>
-          <MaterialIcons
-            name="info-outline"
-            size={24}
-            color={theme.textPrimary}
-            marginRight={14}
-          />
+        <TouchableOpacity onPress={handleIconPress} style={{ marginLeft: 8 }}>
+          <MaterialIcons name="info-outline" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
       </View>
 
@@ -169,31 +115,20 @@ export default function CardCarrossel() {
         showsHorizontalScrollIndicator={false}
         style={styles.container}
         onScroll={onScroll}
-        scrollEventThrottle={16}>
+        scrollEventThrottle={16}
+      >
         {/* Água */}
-        <View style={[styles.card, { flexDirection: 'column' }]}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 12,
-            }}>
-            <Text style={styles.cardTitle}>HOJE</Text>
-
-            {/* Botão de editar */}
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditarInfoCards')}>
-              <MaterialIcons name="edit" size={24} color={theme.textPrimary} />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>HOJE</Text>
           <View style={styles.body}>
             <View style={styles.infoSection}>
               <Text style={styles.label}>Ideal por dia</Text>
               <Text style={styles.value}>
-                <Text style={styles.valueAguaNumber}>
-                  {aguaRecomendadaLitros}
-                </Text>{' '}
+                <Text style={styles.valueAguaNumber}>{aguaRecomendadaCopos}</Text>{' '}
+                <Text style={styles.valueAguaUnit}>copos</Text>
+              </Text>
+              <Text style={styles.value}>
+                <Text style={styles.valueAguaNumber}>{aguaRecomendadaLitros}</Text>{' '}
                 <Text style={styles.valueAguaUnit}>litros</Text>
               </Text>
 
@@ -212,22 +147,8 @@ export default function CardCarrossel() {
         </View>
 
         {/* IMC */}
-        <View style={[styles.card, { flexDirection: 'column' }]}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 12,
-            }}>
-            <Text style={styles.cardTitle}>HOJE</Text>
-
-            {/* Botão de editar */}
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditarInfoCards')}>
-              <MaterialIcons name="edit" size={24} color={theme.textPrimary} />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>HOJE</Text>
           <View style={styles.body}>
             <View style={styles.infoSection}>
               <Text style={styles.label}>IMC ideal</Text>
@@ -249,22 +170,8 @@ export default function CardCarrossel() {
         </View>
 
         {/* Sono */}
-        <View style={[styles.card, { flexDirection: 'column' }]}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 12,
-            }}>
-            <Text style={styles.cardTitle}>HOJE</Text>
-
-            {/* Botão de editar */}
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditarInfoCards')}>
-              <MaterialIcons name="edit" size={24} color={theme.textPrimary} />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>HOJE</Text>
           <View style={styles.body}>
             <View style={styles.infoSection}>
               <Text style={styles.label}>Sono ideal</Text>
@@ -289,10 +196,7 @@ export default function CardCarrossel() {
 
       <View style={styles.pagination}>
         {[0, 1, 2].map((i) => (
-          <View
-            key={i}
-            style={[styles.dot, i === currentIndex ? styles.dotActive : null]}
-          />
+          <View key={i} style={[styles.dot, i === currentIndex ? styles.dotActive : null]} />
         ))}
       </View>
     </View>

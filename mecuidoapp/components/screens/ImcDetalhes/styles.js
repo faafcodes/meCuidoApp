@@ -4,38 +4,49 @@ export default function getStyles(theme) {
   return StyleSheet.create({
     container: {
       flex: 1,
-      padding: 16,
       backgroundColor: theme.background,
     },
-    picker: {
-      backgroundColor: theme.pickerBackground,
-      color: theme.imc,
+    pickerStyle: {
+      inputIOS: {
+        padding: 12,
+        backgroundColor: theme.inputBackground,
+        borderRadius: 8,
+        color: theme.textPrimary,
+        marginHorizontal: 16,
+        marginTop: 16,
+      },
+      inputAndroid: {
+        padding: 12,
+        backgroundColor: theme.inputBackground,
+        borderRadius: 8,
+        color: theme.textPrimary,
+        marginHorizontal: 16,
+        marginTop: 16,
+      },
+      placeholder: {
+        color: theme.textSecondary,
+      },
+    },
+    itemContainer: {
+      borderWidth: 1,
       borderRadius: 8,
-      marginVertical: 12,
-      marginBottom: 16,
+      padding: 16,
+      marginHorizontal: 16,
+      marginTop: 12,
+      borderColor: theme.border,
     },
-    pickerItem: {
-      height: 44,
-    },
-    item: {
-      paddingVertical: 8,
-      paddingHorizontal: 0,
-      marginBottom: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: 'rgba(0, 0, 0, 0.1)', // borda suave, pode ajustar a cor conforme o tema
-    },
-    itemFaixa: {
+    itemTitle: {
       fontSize: 16,
+      fontWeight: 'bold',
       color: theme.textPrimary,
-      marginBottom: 4,
     },
-    itemRecomendacao: {
-      fontSize: 16,
+    itemDescription: {
+      fontSize: 14,
+      marginTop: 4,
       color: theme.textSecondary,
     },
-    recomendacaoValor: {
-      color: theme.imc,
-      fontWeight: 'bold',
+    listContent: {
+      paddingBottom: 16,
     },
   });
 }
