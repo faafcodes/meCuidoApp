@@ -2,6 +2,10 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default function getStyles(theme) {
   const { width, height } = Dimensions.get('window');
+  const greetingCardWidth = width * 0.85;
+  const greetingCardHeight = width * 0.3;
+  const leafWidth = greetingCardWidth * 0.45;
+  const leafHeight =greetingCardHeight * 0.9;
 
   return StyleSheet.create({
     container: {
@@ -23,7 +27,8 @@ export default function getStyles(theme) {
     greetingCard: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: width * 0.85,
+      width: greetingCardWidth,
+      height: greetingCardHeight,
       alignItems: 'center',
       backgroundColor: theme.greetingCard,
       borderRadius: 12,
@@ -36,14 +41,21 @@ export default function getStyles(theme) {
       color: theme.subtitle,
     },
     userName: {
-      fontSize: 22,
+      fontSize: 30,
       fontWeight: 'bold',
       color: theme.brandMain,
     },
     leafImage: {
-      width: 60,
-      height: 60,
+      width: leafWidth,
+      height: leafHeight,
     },
+    imageDivider: {
+      width: '80%',
+      height: 12, // ajuste conforme a altura real da imagem
+      alignSelf: 'center',
+      marginVertical: 16,
+    },
+
     sectionHeader: {
       flexDirection: 'row',
       justifyContent: 'space-between',
