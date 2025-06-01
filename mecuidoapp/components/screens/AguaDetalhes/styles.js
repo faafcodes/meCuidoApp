@@ -7,16 +7,11 @@ export default function getStyles(theme) {
       padding: 16,
       backgroundColor: theme.background,
     },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.agua,
-      marginBottom: 16,
-    },
     picker: {
-      backgroundColor: theme.card,
-      color: theme.textPrimary,
+      backgroundColor: theme.pickerBackground,
+      color: theme.agua,
       borderRadius: 8,
+      marginVertical: 12,
       marginBottom: 16,
     },
     pickerItem: {

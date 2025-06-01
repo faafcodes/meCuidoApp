@@ -1,12 +1,6 @@
-import React, { useState, useContext } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import React, { useState, useContext, useRef } from 'react';
+import { View, Text, TouchableOpacity, Alert, Platform } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'; // Import necessário
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../../context/ThemeContext';
@@ -35,6 +29,10 @@ export default function Cadastro({ navigation }) {
   const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [aceitoTermos, setAceitoTermos] = useState(false);
   const [erros, setErros] = useState({});
+  const [senhaVisible, setSenhaVisible] = useState(false);
+  const [confirmarSenhaVisible, setConfirmarSenhaVisible] = useState(false);
+  const senhaTooltipRef = useRef(null);
+  const [erro, setErro] = useState({});
 
   const formatarData = (data) =>
     data
@@ -67,10 +65,10 @@ export default function Cadastro({ navigation }) {
           email: email.trim().toLowerCase(),
           dataNascimento: dataNascimento ? dataNascimento.toISOString() : '',
           senha,
-          peso: 0, // Valor padrão
-          altura: 0, // Valor padrão
-          agua: 0, // Valor padrão
-          sono: 0, // Valor padrão
+          peso: 0,
+          altura: 0,
+          agua: 0,
+          sono: 0,
         };
 
         await cadastrarUsuario(novoUsuario);
@@ -82,9 +80,11 @@ export default function Cadastro({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView
+    <KeyboardAwareScrollView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      enableOnAndroid={true}
+      extraScrollHeight={20} // Altura adicional para garantir que os campos não fiquem escondidos
+    >
       <InputField
         label="Nome"
         placeholder="Digite seu nome"
@@ -130,25 +130,33 @@ export default function Cadastro({ navigation }) {
       <InputField
         label="Senha"
         placeholder="Mínimo de 10 caracteres"
-        secureTextEntry={!mostrarSenha}
         value={senha}
         onChangeText={setSenha}
-        onTogglePassword={() => setMostrarSenha(!mostrarSenha)}
-        passwordVisible={mostrarSenha}
+        secureTextEntry={!senhaVisible}
+        showPasswordToggle
+        onTogglePassword={() => setSenhaVisible(!senhaVisible)}
+        passwordVisible={senhaVisible}
+        tooltip={{
+          onToggle: () => {},
+          iconRef: senhaTooltipRef,
+        }}
         error={erros.senha}
       />
+
       <InputField
         label="Confirmar senha"
-        placeholder="Digite novamente a senha"
-        secureTextEntry={!mostrarConfirmarSenha}
+        placeholder="Digite a senha novamente"
         value={confirmarSenha}
         onChangeText={setConfirmarSenha}
+        secureTextEntry={!confirmarSenhaVisible}
+        showPasswordToggle
         onTogglePassword={() =>
-          setMostrarConfirmarSenha(!mostrarConfirmarSenha)
+          setConfirmarSenhaVisible(!confirmarSenhaVisible)
         }
-        passwordVisible={mostrarConfirmarSenha}
+        passwordVisible={confirmarSenhaVisible}
         error={erros.confirmarSenha}
       />
+
       <Checkbox
         label={
           <Text style={{ fontSize: 14, color: theme.textPrimary }}>
@@ -171,9 +179,7 @@ export default function Cadastro({ navigation }) {
         onPress={() => setAceitoTermos(!aceitoTermos)}
         error={erros.termos}
       />
-      rros.termos} />
       <BotaoDestaque onPress={handleCadastrar} texto="Criar conta" />
-      <Versao />
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }

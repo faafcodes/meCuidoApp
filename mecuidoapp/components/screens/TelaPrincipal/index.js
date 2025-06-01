@@ -53,6 +53,13 @@ function MainScreen({ navigation }) {
           resizeMode="contain"
         />
       </View>
+      
+      {/* Divisória */}
+      <Image
+        source={require('../../../assets/divider.png')}
+        style={styles.imageDivider}
+        resizeMode="contain"
+      />
 
       {/* Carrossel */}
       <CardCarrossel />
