@@ -2,15 +2,15 @@ import React, { useState, useContext, useRef } from 'react';
 import { View, Text, TouchableOpacity, Alert, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'; // Import necessário
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { MaterialIcons } from '@expo/vector-icons';
+
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 
-import ButtonBack from '../../common/BotaoVoltar';
 import InputField from '../../common/InputField';
 import Checkbox from '../../common/Checkbox';
-import Versao from '../../common/Versao';
+
 import BotaoDestaque from '../../common/BotaoDestaque';
+import Tooltip from '../../common/Tooltip';
 
 import getStyles from './styles';
 
@@ -25,14 +25,12 @@ export default function Cadastro({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [aceitoTermos, setAceitoTermos] = useState(false);
   const [erros, setErros] = useState({});
   const [senhaVisible, setSenhaVisible] = useState(false);
   const [confirmarSenhaVisible, setConfirmarSenhaVisible] = useState(false);
   const senhaTooltipRef = useRef(null);
-  const [erro, setErro] = useState({});
+  const [mostrarTooltipSenha, setMostrarTooltipSenha] = useState(false);
 
   const formatarData = (data) =>
     data
@@ -137,10 +135,17 @@ export default function Cadastro({ navigation }) {
         onTogglePassword={() => setSenhaVisible(!senhaVisible)}
         passwordVisible={senhaVisible}
         tooltip={{
-          onToggle: () => {},
+          onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
           iconRef: senhaTooltipRef,
         }}
         error={erros.senha}
+      />
+
+      <Tooltip
+        visible={mostrarTooltipSenha}
+        onClose={() => setMostrarTooltipSenha(false)}
+        text="A senha deve ter entre 10 e 20 caracteres para garantir sua segurança."
+        position={{ top: 320, left: 50 }} // ajuste conforme necessário
       />
 
       <InputField

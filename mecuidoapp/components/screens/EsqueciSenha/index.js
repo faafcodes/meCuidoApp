@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import InputField from '../../common/InputField';
 import BirthdateInputField from '../../common/AniversarioInput';
+import Tooltip from '../../common/Tooltip';
 import getStyles from './styles';
 import firebase from 'firebase'; // certifique-se que Firebase já está inicializado
 
@@ -17,62 +18,64 @@ export default function ForgotPasswordScreen() {
   const [birthdateError, setBirthdateError] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
- async function validateAndResetPassword() {
-  // Verifica se email é string e não vazio
-  const usuariosSnapshot = await firebase
-    .database()
-    .ref('/users') 
-    .once('value');
-  console.log('Todos os usuários:', usuariosSnapshot.val());
+  const [mostrarTooltipNascimento, setMostrarTooltipNascimento] =
+    useState(false);
 
-  console.log('birthdate:', birthdate);
-  if (typeof email !== 'string' || !email.trim()) {
-    Alert.alert('Erro', 'Por favor, preencha seu e-mail.');
-    return;
-  }
-
-  if (!birthdate) {
-    Alert.alert('Erro', 'Por favor, preencha sua data de nascimento.');
-    return;
-  }
-
-  try {
-    // Busca no Realtime Database pelo e-mail (convertendo para minúsculo)
-    const snapshot = await firebase
+  async function validateAndResetPassword() {
+    // Verifica se email é string e não vazio
+    const usuariosSnapshot = await firebase
       .database()
-      .ref('/users') 
-      .orderByChild('email')
-      .equalTo(email.trim().toLowerCase())
+      .ref('/users')
       .once('value');
+    console.log('Todos os usuários:', usuariosSnapshot.val());
 
-    if (!snapshot.exists()) {
-      Alert.alert('Erro', 'E-mail não encontrado no banco de dados.');
+    console.log('birthdate:', birthdate);
+    if (typeof email !== 'string' || !email.trim()) {
+      Alert.alert('Erro', 'Por favor, preencha seu e-mail.');
       return;
     }
 
-    const usuarios = snapshot.val();
-    const userId = Object.keys(usuarios)[0];
-    const userData = usuarios[userId];
-
-    if (userData.dataNascimento !== birthdate) {
-      Alert.alert('Erro', 'Data de nascimento incorreta.');
+    if (!birthdate) {
+      Alert.alert('Erro', 'Por favor, preencha sua data de nascimento.');
       return;
     }
 
-    await firebase.auth().sendPasswordResetEmail(email.trim().toLowerCase());
-    setModalVisible(true);
-  } catch (error) {
-    console.error('Erro Firebase:', error);
-    if (error.code === 'auth/user-not-found') {
-      Alert.alert('Erro', 'E-mail não encontrado no Auth.');
-    } else if (error.code === 'auth/invalid-email') {
-      Alert.alert('Erro', 'E-mail inválido. Verifique o formato.');
-    } else {
-      Alert.alert('Erro', 'Erro ao enviar e-mail: ' + error.message);
+    try {
+      // Busca no Realtime Database pelo e-mail (convertendo para minúsculo)
+      const snapshot = await firebase
+        .database()
+        .ref('/users')
+        .orderByChild('email')
+        .equalTo(email.trim().toLowerCase())
+        .once('value');
+
+      if (!snapshot.exists()) {
+        Alert.alert('Erro', 'E-mail não encontrado no banco de dados.');
+        return;
+      }
+
+      const usuarios = snapshot.val();
+      const userId = Object.keys(usuarios)[0];
+      const userData = usuarios[userId];
+
+      if (userData.dataNascimento !== birthdate) {
+        Alert.alert('Erro', 'Data de nascimento incorreta.');
+        return;
+      }
+
+      await firebase.auth().sendPasswordResetEmail(email.trim().toLowerCase());
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Erro Firebase:', error);
+      if (error.code === 'auth/user-not-found') {
+        Alert.alert('Erro', 'E-mail não encontrado no Auth.');
+      } else if (error.code === 'auth/invalid-email') {
+        Alert.alert('Erro', 'E-mail inválido. Verifique o formato.');
+      } else {
+        Alert.alert('Erro', 'Erro ao enviar e-mail: ' + error.message);
+      }
     }
   }
-}
-
 
   return (
     <View style={styles.container}>
@@ -88,11 +91,18 @@ export default function ForgotPasswordScreen() {
 
       <BirthdateInputField
         tooltip={{
-          onToggle: () => alert('Use sua data de nascimento para segurança.'),
+          onToggle: () =>
+            setMostrarTooltipNascimento(!mostrarTooltipNascimento),
         }}
         value={birthdate}
         onChangeText={setBirthdate}
         error={birthdateError}
+      />
+      <Tooltip
+        visible={mostrarTooltipNascimento}
+        onClose={() => setMostrarTooltipNascimento(false)}
+        text="Use sua data de nascimento para confirmar sua identidade com segurança."
+        position={{ top: 130, left: 30 }} // ajuste conforme necessário
       />
 
       <TouchableOpacity

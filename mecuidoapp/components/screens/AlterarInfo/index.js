@@ -33,6 +33,8 @@ export default function EditarInfo({ navigation }) {
   const [erro, setErro] = useState({});
   const senhaTooltipRef = useRef(null);
   const sexoTooltipRef = useRef(null);
+  const [mostrarTooltipSexo, setMostrarTooltipSexo] = useState(false);
+  const [mostrarTooltipSenha, setMostrarTooltipSenha] = useState(false);
 
   const validar = () => {
     const erros = {};
@@ -49,7 +51,7 @@ export default function EditarInfo({ navigation }) {
     if (!validar()) return;
 
     const dadosAtualizados = {};
-    
+
     if (nome.trim() !== user.nome) dadosAtualizados.nome = nome.trim();
     if (email.trim().toLowerCase() !== user.email)
       dadosAtualizados.email = email.trim().toLowerCase();
@@ -96,15 +98,15 @@ export default function EditarInfo({ navigation }) {
           onChange={setDataNascimento}
         />
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 16,
+          }}>
           <Text style={styles.label}>Sexo</Text>
           <TouchableOpacity
-            onPress={() =>
-              sexoTooltipRef.current?.toggleTooltip &&
-              sexoTooltipRef.current.toggleTooltip()
-            }
-            ref={sexoTooltipRef}
-          >
+            onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
             <MaterialIcons
               name="info-outline"
               size={16}
@@ -129,6 +131,12 @@ export default function EditarInfo({ navigation }) {
           dropDownContainerStyle={styles.dropdownContainer}
         />
         {erro.sexo && <Text style={styles.error}>{erro.sexo}</Text>}
+        <Tooltip
+          visible={mostrarTooltipSexo}
+          onClose={() => setMostrarTooltipSexo(false)}
+          text="Para garantir resultados mais confiáveis, selecione o sexo conforme seu perfil hormonal atual. Caso esteja em tratamento hormonal, escolha o sexo correspondente ao tratamento. Caso contrário, selecione o sexo atribuído no nascimento."
+          position={{ top: 150, left: 30 }} // ajuste conforme necessário
+        />
 
         <InputField
           label="E-mail"
@@ -149,10 +157,16 @@ export default function EditarInfo({ navigation }) {
           onTogglePassword={() => setSenhaVisible(!senhaVisible)}
           passwordVisible={senhaVisible}
           tooltip={{
-            onToggle: () => {},
-            iconRef: senhaTooltipRef,
+            onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
           }}
           error={erro.senha}
+        />
+
+        <Tooltip
+          visible={mostrarTooltipSenha}
+          onClose={() => setMostrarTooltipSenha(false)}
+          text="A senha deve ter entre 10 e 20 caracteres para garantir sua segurança."
+          position={{ top: 420, left: 30 }} // ajuste conforme necessário
         />
 
         <InputField
@@ -162,7 +176,9 @@ export default function EditarInfo({ navigation }) {
           onChangeText={setConfirmarSenha}
           secureTextEntry={!confirmarSenhaVisible}
           showPasswordToggle
-          onTogglePassword={() => setConfirmarSenhaVisible(!confirmarSenhaVisible)}
+          onTogglePassword={() =>
+            setConfirmarSenhaVisible(!confirmarSenhaVisible)
+          }
           passwordVisible={confirmarSenhaVisible}
           error={erro.confirmarSenha}
         />

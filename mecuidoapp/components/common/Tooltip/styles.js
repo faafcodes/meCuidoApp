@@ -1,20 +1,17 @@
-// components/Tooltip/styles.js
 import { StyleSheet } from 'react-native';
 
 export default function getStyles(theme) {
   return StyleSheet.create({
     modal: {
       margin: 0,
-      position: 'absolute',
+      justifyContent: 'flex-start', // permite que o conteúdo apareça no topo
+      alignItems: 'flex-start',
     },
     tooltip: {
-      position: 'absolute',
       backgroundColor: theme.backgroundTooltip,
       borderRadius: 8,
       padding: 10,
-      minWidth: 150,
-      maxWidth: 220,
-      minHeight: 70,
+      maxWidth: 300,
       zIndex: 10,
       shadowColor: theme.black,
       shadowOffset: { width: 0, height: 2 },
@@ -26,6 +23,7 @@ export default function getStyles(theme) {
       color: theme.textPrimary,
       fontSize: 14,
       fontWeight: '500',
+      flexWrap: 'wrap',
     },
   });
 }

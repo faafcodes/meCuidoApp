@@ -1,4 +1,3 @@
-// components/Tooltip/index.js
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
 import Modal from 'react-native-modal';
@@ -18,7 +17,7 @@ export default function Tooltip({ visible, onClose, text, position = { top: 100,
       onBackdropPress={onClose}
       style={styles.modal}
     >
-      <View style={[styles.tooltip, position]}>
+      <View style={[styles.tooltip, { position: 'absolute', top: position.top, left: position.left }]}>
         <Text style={styles.text}>{text}</Text>
       </View>
     </Modal>
