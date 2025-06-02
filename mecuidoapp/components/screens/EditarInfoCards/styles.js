@@ -4,6 +4,7 @@ export default (theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      justifyContent: 'center',
       backgroundColor: theme.background,
       paddingHorizontal: 30,
       paddingTop: 40,
@@ -36,5 +37,20 @@ export default (theme) =>
       color: theme.textPrimary,
       fontWeight: 'bold',
       fontSize: 16,
+    },
+
+    subtituloContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: 4,
+      marginBottom: 12,
+    },
+    subtituloTexto: {
+      marginLeft: 4,
+      color: theme.textSecondary,
+      fontSize: 14,
+    },
+    subtituloTextoNegrito: {
+      fontWeight: 'bold',
     },
   });

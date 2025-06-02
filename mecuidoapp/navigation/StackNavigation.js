@@ -99,7 +99,7 @@ export default function StackNavigation() {
       <Stack.Screen
         name="EditarInfoCards"
         component={EditarInfoCards}
-        options={{ title: 'Alterar Valores' }}
+        options={{ title: 'Atualizar Cards' }}
       />
     </Stack.Navigator>
   );

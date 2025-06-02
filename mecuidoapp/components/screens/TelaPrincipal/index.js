@@ -33,7 +33,7 @@ function MainScreen({ navigation }) {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <MaterialIcons name="menu" size={28} color={theme.subtitle} />
+          <MaterialIcons name="menu" size={32} color={theme.subtitle} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Você</Text>
         <View style={{ width: 28 }} /> {/* Espaço para alinhar */}

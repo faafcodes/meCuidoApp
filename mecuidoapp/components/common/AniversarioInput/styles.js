@@ -7,7 +7,7 @@ export default function getStyles(theme) {
     },
     label: {
       fontWeight: '700',
-      fontSize: 14,
+      fontSize: 20,
       marginBottom: 8,
       color: theme.subtitle,
     },
@@ -21,14 +21,14 @@ export default function getStyles(theme) {
       borderWidth: 1,
       borderColor: theme.brandSoft,
       borderRadius: 8,
-      paddingHorizontal: 10,
+      paddingHorizontal: 12,
       alignItems: 'center',
       backgroundColor: theme.background,
-      height: 40,
+      height: 50,
     },
     input: {
       flex: 1,
-      fontSize: 14,
+      fontSize: 16,
     },
     rightIcon: {
       marginLeft: 6,

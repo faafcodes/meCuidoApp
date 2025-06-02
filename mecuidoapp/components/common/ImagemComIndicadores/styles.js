@@ -1,17 +1,22 @@
 import { Dimensions } from 'react-native';
 
 export default function getStyles(theme) {
+  const { width, height } = Dimensions.get('window');
+  const cardWidth = width * 0.8;
+  const cardHeight = width * 0.8;
   return {
     container: {
       alignItems: 'center',
     },
     image: {
-      width: 300,
-      height: 290,
+      width: cardWidth,
+      height: cardHeight,
+      borderRadius: 10,
     },
     dotsContainer: {
       flexDirection: 'row',
-      marginTop: 10,
+      marginTop: 20,
+      marginBottom: 20,
       justifyContent: 'center',
     },
     dot: {

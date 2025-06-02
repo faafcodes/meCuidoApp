@@ -4,8 +4,8 @@ const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: 150,
       backgroundColor: theme.background,
-      paddingTop: 40,
       paddingHorizontal: 30,
     },
     title: {
@@ -30,17 +30,6 @@ const getStyles = (theme) =>
       height: 40,
       color: theme.textPrimary,
     },
-    button: {
-      backgroundColor: theme.brandMain,
-      padding: 12,
-      borderRadius: 8,
-      alignItems: 'center',
-    },
-    buttonText: {
-      color: theme.white,
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
     modalBackground: {
       flex: 1,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -56,7 +45,7 @@ const getStyles = (theme) =>
       maxHeight: '80%',
     },
     modalTitle: {
-      fontSize: 18,
+      fontSize: 50,
       fontWeight: 'bold',
       color: theme.brandAccent,
       marginBottom: 10,

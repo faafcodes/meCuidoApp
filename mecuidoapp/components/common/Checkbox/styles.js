@@ -9,8 +9,8 @@ export default function getStyles(theme) {
       alignItems: 'center',
     },
     checkbox: {
-      width: 18,
-      height: 18,
+      width: 22,
+      height: 22,
       borderWidth: 1,
       borderColor: theme.brandSoft,
       borderRadius: 4,
@@ -25,13 +25,13 @@ export default function getStyles(theme) {
       borderRadius: 2,
     },
     checkboxLabel: {
-      fontSize: 12,
+      fontSize: 16,
       color: theme.subtitle,
       flex: 1,
     },
     errorText: {
       color: theme.error,
-      fontSize: 12,
+      fontSize: 16,
       marginTop: 4,
       marginLeft: 28,
     },

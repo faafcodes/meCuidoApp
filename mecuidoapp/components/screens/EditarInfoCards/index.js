@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, Text } from 'react-native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
+import { MaterialIcons } from '@expo/vector-icons';
 import InputField from '../../../components/common/InputField'; // Ajuste o caminho conforme necessário
 import BotaoEntrar from '../../../components/common/BotaoDestaque'; // Ajuste o caminho conforme necessário
 import getStyles from './styles';
@@ -51,7 +52,15 @@ export default function EditarInfoAgua({ navigation }) {
           value={agua}
           onChangeText={setAgua}
           keyboardType="numeric"
+          containerStyle={{ marginBottom: 10 }}
         />
+        <View style={styles.subtituloContainer}>
+          <MaterialIcons name="refresh" size={16} color={theme.iconColor} />
+          <Text style={styles.subtituloTexto}>
+            1 copo equivale a{' '}
+            <Text style={styles.subtituloTextoNegrito}>200ml</Text>.
+          </Text>
+        </View>
 
         <InputField
           label="Peso (kg)"
@@ -70,14 +79,18 @@ export default function EditarInfoAgua({ navigation }) {
         />
 
         <InputField
-          label="Horas de Sono"
+          label="Horas de sono"
           placeholder="Ex: 7"
           value={sono}
           onChangeText={setSono}
           keyboardType="numeric"
         />
 
-        <BotaoEntrar texto="Salvar" onPress={handleSalvar} />
+        <BotaoEntrar
+          texto="Salvar"
+          onPress={handleSalvar}
+          style={{ alignSelf: 'center', width: '100%' }}
+        />
       </ScrollView>
     </View>
   );

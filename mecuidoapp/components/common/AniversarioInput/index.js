@@ -6,7 +6,15 @@ import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 import getStyles from './styles';
 
-export default function BirthdateInputField({ tooltip, error, value, onChangeText }) {
+export default function BirthdateInputField({
+  tooltip,
+  error,
+  value,
+  onChangeText,
+  containerStyle,
+  inputStyle,
+  labelStyle,
+}) {
   const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
 
@@ -47,14 +55,16 @@ export default function BirthdateInputField({ tooltip, error, value, onChangeTex
   };
 
   return (
-    <View style={styles.formGroup}>
+    <View style={[styles.formGroup, containerStyle]}>
       <View style={styles.labelRow}>
-        <Text style={styles.label}>Data de Nascimento</Text>
+        <Text style={[styles.label, labelStyle]}>Data de Nascimento</Text>
         {tooltip && (
-          <TouchableOpacity onPress={tooltip.onToggle} ref={tooltip.iconRef || null}>
+          <TouchableOpacity
+            onPress={tooltip.onToggle}
+            ref={tooltip.iconRef || null}>
             <MaterialIcons
               name="info-outline"
-              size={16}
+              size={20}
               color={theme.iconColor}
               style={styles.iconInfo}
             />
@@ -66,7 +76,12 @@ export default function BirthdateInputField({ tooltip, error, value, onChangeTex
         style={styles.inputContainer}
         onPress={() => setShowPicker(true)}
         activeOpacity={0.7}>
-        <Text style={[styles.input, { color: birthdate ? theme.subtitle : theme.textPrimary }]}>
+        <Text
+          style={[
+            styles.input,
+            { color: value ? theme.subtitle : theme.textPrimary },
+            inputStyle,
+          ]}>
           {formattedDate}
         </Text>
         <MaterialIcons
@@ -92,7 +107,12 @@ export default function BirthdateInputField({ tooltip, error, value, onChangeTex
 
       {Platform.OS === 'ios' && (
         <Modal transparent animationType="slide" visible={showPicker}>
-          <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000066' }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              backgroundColor: '#00000066',
+            }}>
             <View style={{ backgroundColor: theme.background, padding: 16 }}>
               <DateTimePicker
                 value={birthdate || new Date(2000, 0, 1)}
@@ -102,7 +122,12 @@ export default function BirthdateInputField({ tooltip, error, value, onChangeTex
                 maximumDate={new Date()}
               />
               <TouchableOpacity onPress={() => setShowPicker(false)}>
-                <Text style={{ color: theme.brand, textAlign: 'right', marginTop: 10 }}>
+                <Text
+                  style={{
+                    color: theme.brand,
+                    textAlign: 'right',
+                    marginTop: 10,
+                  }}>
                   Confirmar
                 </Text>
               </TouchableOpacity>
@@ -113,4 +138,3 @@ export default function BirthdateInputField({ tooltip, error, value, onChangeTex
     </View>
   );
 }
-

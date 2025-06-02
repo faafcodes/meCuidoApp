@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 export default function getStyles(theme) {
   const { width, height } = Dimensions.get('window');
+  const headerWidth = width * 0.85;
   const greetingCardWidth = width * 0.85;
   const greetingCardHeight = width * 0.3;
   const leafWidth = greetingCardWidth * 0.45;
@@ -12,15 +13,17 @@ export default function getStyles(theme) {
       flex: 1,
       backgroundColor: theme.background,
       padding: 20,
-      paddingTop: 50,
+      paddingTop: 70,
     },
     header: {
+      width: headerWidth,
+      alignSelf: 'center',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
     },
     headerTitle: {
-      fontSize: 18,
+      fontSize: 25,
       fontWeight: 'bold',
       color: theme.subtitle,
     },
@@ -33,15 +36,15 @@ export default function getStyles(theme) {
       backgroundColor: theme.greetingCard,
       borderRadius: 12,
       padding: 20,
-      marginTop: 24,
+      marginTop: 50,
       marginHorizontal: (width * 0.05) / 2,
     },
     greetingText: {
-      fontSize: 18,
+      fontSize: 20,
       color: theme.subtitle,
     },
     userName: {
-      fontSize: 30,
+      fontSize: 32,
       fontWeight: 'bold',
       color: theme.brandMain,
     },
@@ -50,10 +53,10 @@ export default function getStyles(theme) {
       height: leafHeight,
     },
     imageDivider: {
-      width: '80%',
+      width: '90%',
       height: 12, // ajuste conforme a altura real da imagem
       alignSelf: 'center',
-      marginVertical: 16,
+      marginVertical: 40,
     },
 
     sectionHeader: {

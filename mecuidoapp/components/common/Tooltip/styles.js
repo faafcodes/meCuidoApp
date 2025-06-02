@@ -4,13 +4,13 @@ export default function getStyles(theme) {
   return StyleSheet.create({
     modal: {
       margin: 0,
-      justifyContent: 'flex-start', // permite que o conteúdo apareça no topo
+      justifyContent: 'flex-start', 
       alignItems: 'flex-start',
     },
     tooltip: {
       backgroundColor: theme.backgroundTooltip,
       borderRadius: 8,
-      padding: 10,
+      padding: 12,
       maxWidth: 300,
       zIndex: 10,
       shadowColor: theme.black,
@@ -21,7 +21,7 @@ export default function getStyles(theme) {
     },
     text: {
       color: theme.textPrimary,
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: '500',
       flexWrap: 'wrap',
     },

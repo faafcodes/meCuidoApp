@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 export default function getStyles(theme) {
   return StyleSheet.create({
     formGroup: {
-      marginBottom: 20,
+      marginBottom: 30,
     },
     label: {
       fontWeight: '700',
-      fontSize: 14,
+      fontSize: 20,
       marginBottom: 8,
       color: theme.subtitle,
     },
@@ -16,14 +16,14 @@ export default function getStyles(theme) {
       borderWidth: 1,
       borderColor: theme.brandSoft,
       borderRadius: 8,
-      paddingHorizontal: 10,
+      paddingHorizontal: 12,
       alignItems: 'center',
       backgroundColor: theme.background,
     },
     input: {
       flex: 1,
-      height: 40,
-      fontSize: 14,
+      height: 50,
+      fontSize: 16,
       color: theme.subtitle,
     },
     error: {

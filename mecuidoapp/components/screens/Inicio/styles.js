@@ -12,7 +12,7 @@ export default function getStyles(theme) {
       backgroundColor: theme.background,
     },
     bemVindo: {
-      fontSize: 16,
+      fontSize: 25,
       fontWeight: '600',
       color: theme.subtitle,
     },

@@ -4,8 +4,8 @@ import getStyles from './styles';
 
 import { ThemeContext } from '../../../context/ThemeContext'; 
 import Logo from '../../common/Logo';
-import BotaoEntrar from '../../common/BotaoDestaque';
-import LinkCriarConta from '../../common/LinkDestaque';
+import BotaoDestaque from '../../common/BotaoDestaque';
+import LinkDestaque from '../../common/LinkDestaque';
 import Versao from '../../common/Versao';
 import ImagemComIndicadores from '../../common/ImagemComIndicadores';
 
@@ -17,7 +17,7 @@ export default function Inicio({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.bemVindo}>Bem-vindo ao</Text>
 
-      <Logo />
+      <Logo/>
 
       <ImagemComIndicadores
         imagens={[
@@ -27,9 +27,9 @@ export default function Inicio({ navigation }) {
         ]}
       />
 
-      <BotaoEntrar texto="Entrar" onPress={() => navigation.navigate('Login')} />
+      <BotaoDestaque texto="Entrar" onPress={() => navigation.navigate('Login')} />
 
-      <LinkCriarConta texto="Criar Conta" onPress={() => navigation.navigate('Cadastro')} />
+      <LinkDestaque texto="Criar Conta" onPress={() => navigation.navigate('Cadastro')} />
 
       <Versao numero="1.0" />
     </View>

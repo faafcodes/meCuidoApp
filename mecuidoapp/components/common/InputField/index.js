@@ -20,16 +20,21 @@ export default function InputField({
   editable = true,
   tooltip,
   onPressIn,
+  // Novas props para customização
+  containerStyle,
+  inputStyle,
+  labelStyle,
+  errorStyle,
 }) {
   const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   const IconComponent = iconType === 'Ionicons' ? Ionicons : MaterialIcons;
 
   return (
-    <View style={styles.formGroup}>
+    <View style={[styles.formGroup, containerStyle]}>
       {/* Label + ícone de info */}
       <View style={styles.labelRow}>
-        <Text style={styles.label}>{label}</Text>
+        <Text style={[styles.label, labelStyle]}>{label}</Text>
         {tooltip && (
           <TouchableOpacity
             onPress={tooltip.onToggle}
@@ -46,7 +51,7 @@ export default function InputField({
 
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           placeholder={placeholder}
           placeholderTextColor={theme.textPrimary}
           keyboardType={keyboardType}
@@ -71,7 +76,9 @@ export default function InputField({
           </TouchableOpacity>
         )}
       </View>
-      {error && <Text style={styles.error}>{error}</Text>}
+      {error && (
+        <Text style={[styles.error, errorStyle]}>{error}</Text>
+      )}
     </View>
   );
 }

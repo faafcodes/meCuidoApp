@@ -156,7 +156,7 @@ export default function CardCarrossel() {
         <TouchableOpacity onPress={handleIconPress}>
           <MaterialIcons
             name="info-outline"
-            size={24}
+            size={22}
             color={theme.textPrimary}
             marginRight={14}
           />
@@ -286,14 +286,15 @@ export default function CardCarrossel() {
           </View>
         </View>
       </ScrollView>
-
-      <View style={styles.pagination}>
-        {[0, 1, 2].map((i) => (
-          <View
-            key={i}
-            style={[styles.dot, i === currentIndex ? styles.dotActive : null]}
-          />
-        ))}
+      <View style={styles.paginationWrapper}>
+        <View style={styles.pagination}>
+          {[0, 1, 2].map((i) => (
+            <View
+              key={i}
+              style={[styles.dot, i === currentIndex ? styles.dotActive : null]}
+            />
+          ))}
+        </View>
       </View>
     </View>
   );

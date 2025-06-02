@@ -15,7 +15,8 @@ export default function getStyles(theme) {
       padding: 20,
       width: cardWidth,
       height: cardWidth,
-      marginHorizontal: (width * 0.05) / 2, // Centraliza no carrossel
+      marginHorizontal: (width * 0.05) / 2,
+      marginTop: 25,
     },
     carouselTitleContainer: {
       width: cardWidth,
@@ -25,10 +26,10 @@ export default function getStyles(theme) {
 
     carouselTitlePrefix: {
       textAlign: 'left',
-      fontSize: 18,
+      fontSize: 22,
       fontWeight: 'bold',
       marginBottom: 8,
-      color: theme.subtitle, // herda do tema
+      color: theme.subtitle,
     },
     carouselTitleHighlighted: {
       fontStyle: 'bold',
@@ -41,7 +42,7 @@ export default function getStyles(theme) {
     },
     body: {
       flexDirection: 'row',
- 
+
       alignItems: 'center',
     },
     infoSection: {
@@ -68,6 +69,10 @@ export default function getStyles(theme) {
       height: imageHeight,
       marginLeft: 10,
     },
+    paginationWrapper: {
+      alignSelf: 'center', // impede o alignItems: 'center' do pai afetar
+      marginTop: 20,
+    },
     pagination: {
       flexDirection: 'row',
       justifyContent: 'center',
@@ -78,7 +83,6 @@ export default function getStyles(theme) {
       borderRadius: 5,
       backgroundColor: theme.brandSoft,
       marginHorizontal: 5,
-      marginTop: 20,
       opacity: 0.5,
     },
 

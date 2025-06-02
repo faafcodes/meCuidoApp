@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import InputField from '../../common/InputField';
 import BirthdateInputField from '../../common/AniversarioInput';
@@ -31,10 +32,18 @@ export default function EditarInfo({ navigation }) {
 
   const [openSexo, setOpenSexo] = useState(false);
   const [erro, setErro] = useState({});
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const senhaTooltipRef = useRef(null);
   const sexoTooltipRef = useRef(null);
   const [mostrarTooltipSexo, setMostrarTooltipSexo] = useState(false);
   const [mostrarTooltipSenha, setMostrarTooltipSenha] = useState(false);
+
+  const formatarData = (data) =>
+    data
+      ? `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth() + 1)
+          .toString()
+          .padStart(2, '0')}/${data.getFullYear()}`
+      : '';
 
   const validar = () => {
     const erros = {};
@@ -92,11 +101,27 @@ export default function EditarInfo({ navigation }) {
           iconName="person"
         />
 
-        <BirthdateInputField
-          label="Data de Nascimento"
-          value={dataNascimento}
-          onChange={setDataNascimento}
-        />
+        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+          <InputField
+            label="Data de nascimento"
+            placeholder="dd/mm/aaaa"
+            value={formatarData(dataNascimento)}
+            editable={false}
+            iconName="calendar-today"
+            iconType="MaterialIcons"
+          />
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={dataNascimento || new Date(2000, 0, 1)}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(false);
+              if (selectedDate) setDataNascimento(selectedDate);
+            }}
+          />
+        )}
 
         <View
           style={{

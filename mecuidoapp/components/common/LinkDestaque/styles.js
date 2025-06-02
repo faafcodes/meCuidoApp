@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 
 export default function getStyles(theme) {
   return StyleSheet.create({
-    linkCriarConta: {
+    linkDestaque: {
       color: theme.brandMain, // Agora usa a cor do tema
-      fontSize: 14,
+      fontSize: 20,
       fontWeight: '600',
       marginBottom: 30,
       alignItems: 'center',

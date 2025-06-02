@@ -91,6 +91,8 @@ export default function Cadastro({ navigation }) {
         iconName="person"
         iconType="MaterialIcons"
         error={erros.nome}
+        containerStyle={{ marginTop: -10 }}
+        inputStyle={{ height: 40 }}
       />
       <InputField
         label="E-mail"
@@ -102,6 +104,7 @@ export default function Cadastro({ navigation }) {
         iconName="email"
         iconType="MaterialIcons"
         error={erros.email}
+        inputStyle={{ height: 40 }}
       />
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
         <InputField
@@ -112,6 +115,7 @@ export default function Cadastro({ navigation }) {
           iconName="calendar-today"
           iconType="MaterialIcons"
           error={erros.dataNascimento}
+          inputStyle={{ height: 40 }}
         />
       </TouchableOpacity>
       {showDatePicker && (
@@ -139,6 +143,7 @@ export default function Cadastro({ navigation }) {
           iconRef: senhaTooltipRef,
         }}
         error={erros.senha}
+        inputStyle={{ height: 40 }}
       />
 
       <Tooltip
@@ -160,6 +165,7 @@ export default function Cadastro({ navigation }) {
         }
         passwordVisible={confirmarSenhaVisible}
         error={erros.confirmarSenha}
+        inputStyle={{ height: 40 }}
       />
 
       <Checkbox
@@ -184,7 +190,11 @@ export default function Cadastro({ navigation }) {
         onPress={() => setAceitoTermos(!aceitoTermos)}
         error={erros.termos}
       />
-      <BotaoDestaque onPress={handleCadastrar} texto="Criar conta" />
+      <BotaoDestaque
+        onPress={handleCadastrar}
+        texto="Criar conta"
+        style={{ marginTop: 10, alignSelf: 'center', width: '100%' }}
+      />
     </KeyboardAwareScrollView>
   );
 }

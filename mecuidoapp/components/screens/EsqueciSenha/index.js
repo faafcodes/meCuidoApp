@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, Modal, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Alert, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import InputField from '../../common/InputField';
 import BirthdateInputField from '../../common/AniversarioInput';
+import BotaoDestaque from '../../common/BotaoDestaque';
 import Tooltip from '../../common/Tooltip';
 import getStyles from './styles';
-import firebase from 'firebase'; // certifique-se que Firebase já está inicializado
+import firebase from 'firebase';
 
 export default function ForgotPasswordScreen() {
   const { theme } = useContext(ThemeContext);
@@ -78,7 +79,7 @@ export default function ForgotPasswordScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <InputField
         label="E-mail"
         placeholder="Digite seu e-mail"
@@ -97,6 +98,7 @@ export default function ForgotPasswordScreen() {
         value={birthdate}
         onChangeText={setBirthdate}
         error={birthdateError}
+        containerStyle={{ marginVertical: 50 }}
       />
       <Tooltip
         visible={mostrarTooltipNascimento}
@@ -105,12 +107,12 @@ export default function ForgotPasswordScreen() {
         position={{ top: 130, left: 30 }} // ajuste conforme necessário
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={validateAndResetPassword} // sem parâmetros!
-        activeOpacity={0.8}>
-        <Text style={styles.buttonText}>Recuperar Senha</Text>
-      </TouchableOpacity>
+      <BotaoDestaque
+        texto="Enviar código por e-mail"
+        onPress={validateAndResetPassword}
+        style={{ marginTop: 70, alignSelf: 'center', width: '100%' }}
+        textStyle={{ fontSize: 21 }}
+      />
 
       {/* Modal de Sucesso */}
       <Modal
@@ -135,6 +137,6 @@ export default function ForgotPasswordScreen() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }

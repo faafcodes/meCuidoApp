@@ -24,7 +24,7 @@ const getStyles = (theme) =>
       marginRight: 16,
     },
     texto: {
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: 'bold',
       color: theme.brandMain,
     },
@@ -32,7 +32,7 @@ const getStyles = (theme) =>
       position: 'absolute',
       bottom: 20,
       alignSelf: 'center',
-      fontSize: 12,
+      fontSize: 14,
       color: theme.subtitle,
     },
     voltar: {
@@ -43,7 +43,7 @@ const getStyles = (theme) =>
     },
     voltarTexto: {
       marginLeft: 8,
-      fontSize: 18,
+      fontSize: 22,
       fontWeight: 'bold',
       color: theme.subtitle,
     },

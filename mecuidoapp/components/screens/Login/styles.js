@@ -5,16 +5,16 @@ export default function getStyles(theme) {
     container: {
       flex: 1,
       backgroundColor: theme.background,
-      paddingTop: 40,
       paddingHorizontal: 30,
     },
-    versao: {
-      position: 'absolute',
-      bottom: 15,
-      width: '100%',
-      textAlign: 'center',
-      fontSize: 10,
-      color: theme.subtitle,
+    formContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingBottom: 100,
+    },
+    formWrapper: {
+      flex: 1,
+      justifyContent: 'center',
     },
   });
 }

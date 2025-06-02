@@ -22,7 +22,7 @@ export default function getStyles(theme) {
     },
     label: {
       fontWeight: '700',
-      fontSize: 14,
+      fontSize: 16,
       color: theme.subtitle,
     },
     labelComTooltip: {
@@ -40,7 +40,7 @@ export default function getStyles(theme) {
     link: {
       color: theme.brandMain,
       fontWeight: '600',
-      fontSize: 14,
+      fontSize: 16,
       lineHeight: 20, // igual ao do texto base
       textAlignVertical: 'center', // pode ajudar no Android
     },
