@@ -1,9 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default function getStyles(theme) {
+  const { width, height } = Dimensions.get('window');
+  const inputWidth = width * 0.85;
   return StyleSheet.create({
     formGroup: {
-      marginBottom: 30,
+      marginBottom: 20,
     },
     label: {
       fontWeight: '700',
@@ -24,6 +26,7 @@ export default function getStyles(theme) {
       flex: 1,
       height: 50,
       fontSize: 16,
+      width: inputWidth,
       color: theme.subtitle,
     },
     error: {
@@ -43,7 +46,7 @@ export default function getStyles(theme) {
     },
     iconInfo: {
       marginLeft: 6,
-      marginBottom: 8
+      marginBottom: 8,
     },
   });
 }

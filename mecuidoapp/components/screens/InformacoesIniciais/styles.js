@@ -22,7 +22,7 @@ export default function getStyles(theme) {
     },
     label: {
       fontWeight: '700',
-      fontSize: 14,
+      fontSize: 20,
       marginBottom: 8,
       color: theme.subtitle,
     },

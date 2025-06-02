@@ -47,8 +47,8 @@ export default (theme) =>
     },
     subtituloTexto: {
       marginLeft: 4,
-      color: theme.textSecondary,
-      fontSize: 14,
+      color: theme.subtitle,
+      fontSize: 16,
     },
     subtituloTextoNegrito: {
       fontWeight: 'bold',

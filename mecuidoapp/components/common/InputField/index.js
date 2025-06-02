@@ -41,7 +41,7 @@ export default function InputField({
             ref={tooltip.iconRef ? tooltip.iconRef : null}>
             <MaterialIcons
               name="info-outline"
-              size={16}
+              size={20}
               color={theme.iconColor}
               style={styles.iconInfo}
             />

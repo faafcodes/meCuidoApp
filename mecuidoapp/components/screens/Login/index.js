@@ -95,6 +95,7 @@ export default function Login({ navigation }) {
             onChangeText={setEmail}
             iconName="email"
             iconType="MaterialIcons"
+            containerStyle={{ marginBottom: 40 }}
           />
 
           <InputField

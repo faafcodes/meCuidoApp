@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -91,7 +91,7 @@ export default function EditarInfo({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <InputField
           label="Nome"
@@ -99,6 +99,8 @@ export default function EditarInfo({ navigation }) {
           value={nome}
           onChangeText={setNome}
           iconName="person"
+          containerStyle={{ marginTop: 0 }}
+          inputStyle={{ height: 40 , width: '100%'}}
         />
 
         <TouchableOpacity onPress={() => setShowDatePicker(true)}>
@@ -109,6 +111,8 @@ export default function EditarInfo({ navigation }) {
             editable={false}
             iconName="calendar-today"
             iconType="MaterialIcons"
+            containerStyle={{ marginBottom: 22 }}
+            inputStyle={{ height: 40 }}
           />
         </TouchableOpacity>
         {showDatePicker && (
@@ -134,7 +138,7 @@ export default function EditarInfo({ navigation }) {
             onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
             <MaterialIcons
               name="info-outline"
-              size={16}
+              size={20}
               color={theme.iconColor}
               style={{ marginLeft: 6 }}
             />
@@ -170,6 +174,8 @@ export default function EditarInfo({ navigation }) {
           onChangeText={setEmail}
           iconName="mail"
           keyboardType="email-address"
+          containerStyle={{ marginBottom: 22 }}
+          inputStyle={{ height: 40 }}
         />
 
         <InputField
@@ -185,6 +191,8 @@ export default function EditarInfo({ navigation }) {
             onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
           }}
           error={erro.senha}
+          containerStyle={{ marginBottom: 22 }}
+          inputStyle={{ height: 40 }}
         />
 
         <Tooltip
@@ -206,12 +214,14 @@ export default function EditarInfo({ navigation }) {
           }
           passwordVisible={confirmarSenhaVisible}
           error={erro.confirmarSenha}
+          containerStyle={{ marginBottom: 15 }}
+          inputStyle={{ height: 40 }}
         />
 
         <View style={styles.botaoContainer}>
-          <BotaoDestaque texto="Alterar dados" onPress={handleSalvar} />
+          <BotaoDestaque texto="Alterar dados" onPress={handleSalvar} style={{marginTop: 0, alignSelf: 'center', width: '100%'}}/>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

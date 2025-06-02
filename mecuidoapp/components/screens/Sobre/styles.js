@@ -20,7 +20,7 @@ const getStyles = (theme) =>
       marginLeft: 8,
     },
     content: {
-      paddingHorizontal: 24,
+      paddingHorizontal: 30,
       paddingBottom: 40,
     },
     scrollContent: {
@@ -31,10 +31,11 @@ const getStyles = (theme) =>
     },
 
     paragraph: {
-      fontSize: 16,
-      lineHeight: 24,
+      fontSize: 20,
+      lineHeight: 40,
+      textAlign: 'justify',
       color: theme.textSecondary,
-      marginBottom: 24,
+      marginBottom: 35,
     },
     destaqueVerde: {
       color: theme.brandMain,
@@ -45,16 +46,18 @@ const getStyles = (theme) =>
       color: theme.subtitle,
     },
     titulo: {
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: 'bold',
       color: theme.subtitle,
-      marginBottom: 16,
+      letterSpacing: 3,
+      marginTop: 25,
+      marginBottom: 25,
       textAlign: 'center',
     },
     alunoContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 16,
+      marginBottom: 25,
     },
     avatar: {
       width: 43,
@@ -77,7 +80,7 @@ const getStyles = (theme) =>
     },
     rodape: {
       textAlign: 'center',
-      fontSize: 12,
+      fontSize: 16,
       color: theme.subtitle,
       marginTop: 32,
     },

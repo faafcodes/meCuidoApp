@@ -1,12 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default function getStyles(theme) {
+  const { width, height } = Dimensions.get('window');
+  const containerWidth = width * 0.85;
   return StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: theme.background,
-      paddingHorizontal: 30,
-      paddingTop: 40,
+      paddingHorizontal: 20,
+      paddingTop: 20,
     },
     title: {
       fontSize: 22,
@@ -22,7 +24,7 @@ export default function getStyles(theme) {
     },
     label: {
       fontWeight: '700',
-      fontSize: 14,
+      fontSize: 20,
       color: theme.subtitle,
     },
     labelComTooltip: {
@@ -35,7 +37,7 @@ export default function getStyles(theme) {
       borderColor: theme.brandSoft,
       borderWidth: 1,
       borderRadius: 6,
-      marginBottom: 10,
+      marginBottom: 25,
     },
     dropdownText: {
       color: theme.textPrimary,

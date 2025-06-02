@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { ThemeContext } from '../../../context/ThemeContext';
 import getStyles from './styles';
@@ -16,7 +16,7 @@ export default function SobreScreen({ navigation }) {
   ];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.paragraph}>
@@ -26,7 +26,7 @@ export default function SobreScreen({ navigation }) {
           professor <Text style={styles.negrito}>Saulo Pereira Ribeiro</Text>.
         </Text>
 
-        <Text style={styles.titulo}>Desenvolvedores/alunos:</Text>
+        <Text style={styles.titulo}>Desenvolvedores / alunos:</Text>
 
         {alunos.map((aluno, index) => (
           <View key={index} style={styles.alunoContainer}>
@@ -39,6 +39,6 @@ export default function SobreScreen({ navigation }) {
 
         <Text style={styles.rodape}>2025/1 - Módulo 2</Text>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

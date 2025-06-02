@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, ScrollView, Alert, Text } from 'react-native';
+import { View, ScrollView, Alert, Text, SafeAreaView } from 'react-native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -44,7 +44,7 @@ export default function EditarInfoAgua({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         <InputField
           label="Copos de água por dia"
@@ -55,7 +55,11 @@ export default function EditarInfoAgua({ navigation }) {
           containerStyle={{ marginBottom: 10 }}
         />
         <View style={styles.subtituloContainer}>
-          <MaterialIcons name="refresh" size={16} color={theme.iconColor} />
+          <MaterialIcons
+            name="compare-arrows"
+            size={18}
+            color={theme.iconColor}
+          />
           <Text style={styles.subtituloTexto}>
             1 copo equivale a{' '}
             <Text style={styles.subtituloTextoNegrito}>200ml</Text>.
@@ -92,6 +96,6 @@ export default function EditarInfoAgua({ navigation }) {
           style={{ alignSelf: 'center', width: '100%' }}
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

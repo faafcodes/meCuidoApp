@@ -13,10 +13,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
-import * as firebase from 'firebase'; 
+import * as firebase from 'firebase';
 import 'firebase/database';
 import BotaoDestaque from '../../common/BotaoDestaque';
 import InputField from '../../common/InputField';
+import Tooltip from '../../common/Tooltip';
 import getStyles from './styles';
 
 export default function InformacoesIniciais({ navigation }) {
@@ -31,6 +32,8 @@ export default function InformacoesIniciais({ navigation }) {
   const [agua, setAgua] = useState('');
   const [openSexo, setOpenSexo] = useState(false);
   const [erro, setErro] = useState({});
+  const [mostrarTooltipSexo, setMostrarTooltipSexo] = useState(false);
+  const [mostrarTooltipSenha, setMostrarTooltipSenha] = useState(false);
 
   const validarCampos = () => {
     const erros = {};
@@ -85,7 +88,8 @@ export default function InformacoesIniciais({ navigation }) {
 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [])
   );
 
@@ -101,15 +105,17 @@ export default function InformacoesIniciais({ navigation }) {
       {/* Dropdown de sexo */}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={styles.label}>Sexo</Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
           <MaterialIcons
             name="info-outline"
-            size={16}
+            size={20}
             color={theme.iconColor}
             style={{ marginLeft: 6 }}
           />
         </TouchableOpacity>
       </View>
+
       <DropDownPicker
         open={openSexo}
         value={sexo}
@@ -124,8 +130,15 @@ export default function InformacoesIniciais({ navigation }) {
         textStyle={styles.dropdownText}
         dropDownContainerStyle={styles.dropdownContainer}
       />
+
       {erro.sexo && <Text style={styles.error}>{erro.sexo}</Text>}
 
+      <Tooltip
+        visible={mostrarTooltipSexo}
+        onClose={() => setMostrarTooltipSexo(false)}
+        text="Para garantir resultados mais confiáveis, selecione o sexo conforme seu perfil hormonal atual. Caso esteja em tratamento hormonal, escolha o sexo correspondente ao tratamento. Caso contrário, selecione o sexo atribuído no nascimento."
+        position={{ top: 150, left: 30 }} // ajuste conforme necessário
+      />
       {/* Campos numéricos */}
       <InputField
         label="Altura (cm)"
