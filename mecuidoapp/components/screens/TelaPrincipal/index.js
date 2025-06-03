@@ -36,7 +36,7 @@ function MainScreen({ navigation }) {
           <MaterialIcons name="menu" size={32} color={theme.subtitle} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Você</Text>
-        <View style={{ width: 28 }} /> {/* Espaço para alinhar */}
+        <View style={{ width: 28 }} /> 
       </View>
 
       {/* Saudação */}

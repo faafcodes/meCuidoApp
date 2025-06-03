@@ -3,8 +3,8 @@ import { View, ScrollView, Alert, Text, SafeAreaView } from 'react-native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
-import InputField from '../../../components/common/InputField'; // Ajuste o caminho conforme necessário
-import BotaoEntrar from '../../../components/common/BotaoDestaque'; // Ajuste o caminho conforme necessário
+import InputField from '../../../components/common/InputField'; 
+import BotaoEntrar from '../../../components/common/BotaoDestaque'; 
 import getStyles from './styles';
 
 export default function EditarInfoAgua({ navigation }) {

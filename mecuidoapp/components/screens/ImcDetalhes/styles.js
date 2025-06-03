@@ -22,7 +22,7 @@ export default function getStyles(theme) {
       paddingHorizontal: 0,
       marginBottom: 12,
       borderBottomWidth: 1,
-      borderBottomColor: 'rgba(0, 0, 0, 0.1)', // borda suave, pode ajustar a cor conforme o tema
+      borderBottomColor: 'rgba(0, 0, 0, 0.1)', 
     },
     itemFaixa: {
       fontSize: 16,

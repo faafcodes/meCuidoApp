@@ -88,7 +88,7 @@ export default function getStyles(theme) {
     },
 
     dotActive: {
-      backgroundColor: theme.brandMain, // ou use theme.color que preferir
+      backgroundColor: theme.brandMain, 
       opacity: 1,
     },
     valueAguaNumber: {

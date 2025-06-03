@@ -10,7 +10,7 @@ import {
 import { UserContext } from '../../../context/UserContext';
 import { ThemeContext } from '../../../context/ThemeContext';
 import getStyles from './styles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // corrigido para MaterialIcons
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import { useNavigation } from '@react-navigation/native';
 
 import aguaImg from '../../../assets/drop-icon.png';

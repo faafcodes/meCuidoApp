@@ -55,7 +55,7 @@ export default function getStyles(theme) {
     },
     imageDivider: {
       width: '90%',
-      height: 12, // ajuste conforme a altura real da imagem
+      height: 12, 
       alignSelf: 'center',
       marginVertical: dividerHeight,
     },

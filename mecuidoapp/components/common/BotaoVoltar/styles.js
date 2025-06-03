@@ -1,4 +1,3 @@
-// styles.js
 export default function getStyles(theme) {
   return {
     botaoVoltar: {

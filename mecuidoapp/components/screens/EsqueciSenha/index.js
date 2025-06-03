@@ -104,7 +104,7 @@ export default function ForgotPasswordScreen() {
         visible={mostrarTooltipNascimento}
         onClose={() => setMostrarTooltipNascimento(false)}
         text="Use sua data de nascimento para confirmar sua identidade com segurança."
-        position={{ top: 130, left: 30 }} // ajuste conforme necessário
+        position={{ top: 130, left: 30 }}
       />
 
       <BotaoDestaque

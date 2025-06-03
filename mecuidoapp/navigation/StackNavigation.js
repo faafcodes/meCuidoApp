@@ -27,9 +27,9 @@ export default function StackNavigation() {
       initialRouteName="Inicio"
       screenOptions={{
         headerStyle: {
-          backgroundColor: theme.headerBackground, // cor do fundo do header do seu tema
+          backgroundColor: theme.headerBackground, 
         },
-        headerTintColor: theme.headerText, // cor do texto do header do seu tema
+        headerTintColor: theme.headerText, 
       }}>
       <Stack.Screen
         name="Inicio"

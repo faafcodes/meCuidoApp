@@ -4,6 +4,23 @@ import StackNavigation from './navigation/StackNavigation';
 import { UserProvider } from './context/UserContext';
 import { ThemeProvider } from './context/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+console.clear();
+console.log(`         
+                                                                                  #                 
+                                                                                  **                
+                                                                                  ****            ##
+                                                                         ++       *****   %######## 
+                                                           ++++         +++       ******########### 
+                                                           ++++         +++        ****###########  
+        +++++++ +++++       +++++       ++++++ ++++   +++  ++++    ++++++++     ++++*############   
+       ++++++++++++++++   +++++++++   ++++++++ ++++  +++++ ++++  ++++++++++   +++++++++########     
+       ++++  ++++  ++++  ++++   ++++ ++++      ++++  +++++ ++++ +++++   +++  ++++   ++++            
+       ++++  ++++   +++  +++++++++++++++       ++++  +++++ ++++ ++++    +++  +++    ++++            
+       ++++  ++++   +++  ++++       +++++      ++++  +++++ ++++ +++++   +++  ++++   ++++            
+       ++++  ++++   +++  ++++++++++  +++++++++ +++++++++++ ++++  ++++++++++  ++++++++++             
+       ++++  ++++   +++    ++++++++    +++++++   ++++++++  ++++    ++++++++    +++++++              
+                                                                                           
+`)
 
 // Função para salvar dados de inicialização no AsyncStorage
 const initializeData = async () => {
