@@ -1,4 +1,9 @@
-import React, { useState, useContext, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useContext,
+  useRef,
+  useCallback,
+} from 'react';
 import {
   View,
   Text,
@@ -7,6 +12,7 @@ import {
   Platform,
   BackHandler,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -37,11 +43,47 @@ export default function InformacoesIniciais({ navigation }) {
 
   const validarCampos = () => {
     const erros = {};
-    if (!sexo) erros.sexo = 'Selecione o sexo';
-    if (!altura || isNaN(altura)) erros.altura = 'Altura inválida';
-    if (!peso || isNaN(peso)) erros.peso = 'Peso inválido';
-    if (!sono || isNaN(sono)) erros.sono = 'Horas de sono inválidas';
-    if (!agua || isNaN(agua)) erros.agua = 'Copos de água inválido';
+    const alturaNum = parseFloat(altura);
+    const pesoNum = parseFloat(peso);
+    const sonoNum = parseFloat(sono);
+    const aguaNum = parseInt(agua, 10);
+
+    if (!sexo) {
+      erros.sexo = 'Selecione o sexo';
+    }
+
+    if (!altura || isNaN(alturaNum)) {
+      erros.altura = 'Altura inválida';
+    } else if (alturaNum < 50) {
+      erros.altura = 'Você é um hobbit? 😄';
+    } else if (alturaNum > 250) {
+      erros.altura = 'Altura de girafa detectada! 🦒';
+    }
+
+    if (!peso || isNaN(pesoNum)) {
+      erros.peso = 'Peso inválido';
+    } else if (pesoNum < 20) {
+      erros.peso = 'Isso é o peso de uma almofada? 🛏️';
+    } else if (pesoNum > 300) {
+      erros.peso = 'Peso digno de um urso polar! 🐻‍❄️';
+    }
+
+    if (!sono || isNaN(sonoNum)) {
+      erros.sono = 'Horas de sono inválidas';
+    } else if (sonoNum < 2) {
+      erros.sono = 'Você é um zumbi? 🧟‍♂️';
+    } else if (sonoNum > 16) {
+      erros.sono = 'Dormindo mais que um gato! 🐱💤';
+    }
+
+    if (!agua || isNaN(aguaNum)) {
+      erros.agua = 'Copos de água inválido';
+    } else if (aguaNum < 1) {
+      erros.agua = 'Sem água? Nem uma gotinha? 💧';
+    } else if (aguaNum > 30) {
+      erros.agua = 'Você é um aquário ambulante? 🐠';
+    }
+
     setErro(erros);
     return Object.keys(erros).length === 0;
   };
@@ -96,95 +138,103 @@ export default function InformacoesIniciais({ navigation }) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <Text style={styles.title}>Quase lá!</Text>
-      <Text style={styles.subtitle}>
-        Preencha os campos abaixo para começar:
-      </Text>
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 32 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>Quase lá!</Text>
+        <Text style={styles.subtitle}>
+          Preencha os campos abaixo para começar:
+        </Text>
 
-      {/* Dropdown de sexo */}
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.label}>Sexo</Text>
-        <TouchableOpacity
-          onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
-          <MaterialIcons
-            name="info-outline"
-            size={20}
-            color={theme.iconColor}
-            style={{ marginLeft: 6 }}
-          />
-        </TouchableOpacity>
-      </View>
+        {/* Dropdown de sexo */}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.label}>Sexo</Text>
+          <TouchableOpacity
+            onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
+            <MaterialIcons
+              name="info-outline"
+              size={20}
+              color={theme.iconColor}
+              style={{ marginLeft: 6 }}
+            />
+          </TouchableOpacity>
+        </View>
 
-      <DropDownPicker
-        open={openSexo}
-        value={sexo}
-        items={[
-          { label: 'Masculino', value: 'Masculino' },
-          { label: 'Feminino', value: 'Feminino' },
-        ]}
-        setOpen={setOpenSexo}
-        setValue={setSexo}
-        placeholder="Selecionar"
-        style={styles.dropdown}
-        textStyle={styles.dropdownText}
-        dropDownContainerStyle={styles.dropdownContainer}
-      />
+        <DropDownPicker
+          open={openSexo}
+          value={sexo}
+          items={[
+            { label: 'Masculino', value: 'Masculino' },
+            { label: 'Feminino', value: 'Feminino' },
+          ]}
+          setOpen={setOpenSexo}
+          setValue={setSexo}
+          placeholder="Selecionar"
+          style={styles.dropdown}
+          textStyle={styles.dropdownText}
+          dropDownContainerStyle={styles.dropdownContainer}
+        />
 
-      {erro.sexo && <Text style={styles.error}>{erro.sexo}</Text>}
+        {erro.sexo && <Text style={styles.error}>{erro.sexo}</Text>}
 
-      <Tooltip
-        visible={mostrarTooltipSexo}
-        onClose={() => setMostrarTooltipSexo(false)}
-        text="Para garantir resultados mais confiáveis, selecione o sexo conforme seu perfil hormonal atual. Caso esteja em tratamento hormonal, escolha o sexo correspondente ao tratamento. Caso contrário, selecione o sexo atribuído no nascimento."
-        position={{ top: 150, left: 30 }} // ajuste conforme necessário
-      />
-      {/* Campos numéricos */}
-      <InputField
-        label="Altura (cm)"
-        placeholder="Ex: 170"
-        keyboardType="numeric"
-        value={altura}
-        onChangeText={setAltura}
-        iconName="straighten"
-        iconType="MaterialIcons"
-        error={erro.altura}
-      />
+        <Tooltip
+          visible={mostrarTooltipSexo}
+          onClose={() => setMostrarTooltipSexo(false)}
+          text="Para garantir resultados mais confiáveis, selecione o sexo conforme seu perfil hormonal atual. Caso esteja em tratamento hormonal, escolha o sexo correspondente ao tratamento. Caso contrário, selecione o sexo atribuído no nascimento."
+          position={{ top: 150, left: 30 }} // ajuste conforme necessário
+        />
 
-      <InputField
-        label="Peso (kg)"
-        placeholder="Ex: 65"
-        keyboardType="numeric"
-        value={peso}
-        onChangeText={setPeso}
-        iconName="fitness-center"
-        iconType="MaterialIcons"
-        error={erro.peso}
-      />
+        <InputField
+          label="Altura (cm)"
+          placeholder="Ex: 170"
+          keyboardType="numeric"
+          value={altura}
+          onChangeText={setAltura}
+          iconName="straighten"
+          iconType="MaterialIcons"
+          error={erro.altura}
+        />
 
-      <InputField
-        label="Horas de sono (por noite)"
-        placeholder="Ex: 8"
-        keyboardType="numeric"
-        value={sono}
-        onChangeText={setSono}
-        iconName="bedtime"
-        iconType="MaterialIcons"
-        error={erro.sono}
-      />
+        <InputField
+          label="Peso (kg)"
+          placeholder="Ex: 65"
+          keyboardType="numeric"
+          value={peso}
+          onChangeText={setPeso}
+          iconName="fitness-center"
+          iconType="MaterialIcons"
+          error={erro.peso}
+        />
 
-      <InputField
-        label="Copos de água (por dia)"
-        placeholder="Ex: 8"
-        keyboardType="numeric"
-        value={agua}
-        onChangeText={setAgua}
-        iconName="water-drop"
-        iconType="MaterialIcons"
-        error={erro.agua}
-      />
+        <InputField
+          label="Horas de sono (por noite)"
+          placeholder="Ex: 8"
+          keyboardType="numeric"
+          value={sono}
+          onChangeText={setSono}
+          iconName="bedtime"
+          iconType="MaterialIcons"
+          error={erro.sono}
+        />
 
-      <BotaoDestaque texto="Continuar" onPress={handleContinuar} />
+        <InputField
+          label="Copos de água (por dia)"
+          placeholder="Ex: 8"
+          keyboardType="numeric"
+          value={agua}
+          onChangeText={setAgua}
+          iconName="water-drop"
+          iconType="MaterialIcons"
+          error={erro.agua}
+        />
+
+        <View style={{ marginTop: 16 }}>
+          <BotaoDestaque texto="Continuar" onPress={handleContinuar} />
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }

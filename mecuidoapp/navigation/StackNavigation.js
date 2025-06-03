@@ -44,7 +44,7 @@ export default function StackNavigation() {
       <Stack.Screen
         name="Cadastro"
         component={CadastroScreen}
-        options={{ headerTitle: 'Criar Conta' }}
+        options={{ headerTitle: 'Criar conta' }}
       />
       <Stack.Screen
         name="Main"
@@ -54,7 +54,7 @@ export default function StackNavigation() {
       <Stack.Screen
         name="EditarInfo"
         component={EditarInfoScreen}
-        options={{ headerTitle: 'Alterar Dados' }}
+        options={{ headerTitle: 'Alterar dados' }}
       />
       <Stack.Screen
         name="Sobre"
@@ -64,12 +64,12 @@ export default function StackNavigation() {
       <Stack.Screen
         name="TermosCondicoes"
         component={TermosCondicoesScreen}
-        options={{ headerTitle: 'Termos & Condições' }}
+        options={{ headerTitle: 'Termos & condições' }}
       />
       <Stack.Screen
         name="PoliticaPrivacidade"
         component={PoliticaPrivacidadeScreen}
-        options={{ headerTitle: 'Política de Privacidade' }}
+        options={{ headerTitle: 'Política de privacidade' }}
       />
       <Stack.Screen
         name="InformacoesIniciais"
@@ -84,7 +84,7 @@ export default function StackNavigation() {
       <Stack.Screen
         name="AguaDetalhes"
         component={AguaDetalhes}
-        options={{ title: 'Detalhes da Água' }}
+        options={{ title: 'Detalhes da água' }}
       />
       <Stack.Screen
         name="ImcDetalhes"
@@ -94,12 +94,12 @@ export default function StackNavigation() {
       <Stack.Screen
         name="SonoDetalhes"
         component={SonoDetalhes}
-        options={{ title: 'Detalhes do Sono' }}
+        options={{ title: 'Detalhes do sono' }}
       />
       <Stack.Screen
         name="EditarInfoCards"
         component={EditarInfoCards}
-        options={{ title: 'Atualizar Cards' }}
+        options={{ title: 'Atualizar cards' }}
       />
     </Stack.Navigator>
   );

@@ -1,6 +1,14 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, TouchableOpacity, Alert, Platform } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'; // Import necessário
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { ThemeContext } from '../../../context/ThemeContext';
@@ -8,7 +16,6 @@ import { UserContext } from '../../../context/UserContext';
 
 import InputField from '../../common/InputField';
 import Checkbox from '../../common/Checkbox';
-
 import BotaoDestaque from '../../common/BotaoDestaque';
 import Tooltip from '../../common/Tooltip';
 
@@ -41,15 +48,58 @@ export default function Cadastro({ navigation }) {
 
   const validar = () => {
     const novosErros = {};
-    if (!nome.trim()) novosErros.nome = 'Nome é obrigatório';
-    if (!dataNascimento)
-      novosErros.dataNascimento = 'Data de nascimento é obrigatória';
-    if (!email.includes('@')) novosErros.email = 'E-mail inválido';
-    if (senha.length < 10)
-      novosErros.senha = 'Senha deve ter ao menos 10 caracteres';
-    if (senha !== confirmarSenha)
-      novosErros.confirmarSenha = 'As senhas não coincidem';
-    if (!aceitoTermos) novosErros.termos = 'Você deve aceitar os termos';
+
+    // Nome
+    if (!nome.trim()) {
+      novosErros.nome = 'O nome é obrigatório.';
+    } else if (nome.trim().length < 2) {
+      novosErros.nome = 'Nome muito curto. Digite pelo menos 2 caracteres.';
+    }
+
+    // Data de nascimento
+    if (!dataNascimento) {
+      novosErros.dataNascimento = 'A data de nascimento é obrigatória.';
+    } else {
+      const hoje = new Date();
+      const data18anos = new Date(
+        dataNascimento.getFullYear() + 18,
+        dataNascimento.getMonth(),
+        dataNascimento.getDate()
+      );
+
+      if (data18anos > hoje) {
+        novosErros.dataNascimento = 'Você deve ter pelo menos 18 anos.';
+      } else if (dataNascimento.getFullYear() < 1900) {
+        novosErros.dataNascimento = 'Uau! Você é praticamente um fóssil! 🤯';
+      } else if (dataNascimento > hoje) {
+        novosErros.dataNascimento =
+          'Você veio do futuro? Isso não é permitido!';
+      }
+    }
+
+    // Email
+    if (!email.includes('@')) {
+      novosErros.email = 'Digite um e-mail válido.';
+    } else if (email.length > 50) {
+      novosErros.email = 'Email muito longo! É um romance? 📖';
+    }
+
+    // Senha
+    if (senha.length < 10) {
+      novosErros.senha = 'A senha deve ter no mínimo 10 caracteres.';
+    } else if (senha.length > 20) {
+      novosErros.senha = 'Senha muito longa. Use até 20 caracteres.';
+    }
+
+    // Confirmar senha
+    if (senha !== confirmarSenha) {
+      novosErros.confirmarSenha = 'As senhas não coincidem.';
+    }
+
+    // Aceite dos termos
+    if (!aceitoTermos) {
+      novosErros.termos = 'Você precisa aceitar os termos para continuar.';
+    }
 
     setErros(novosErros);
     return Object.keys(novosErros).length === 0;
@@ -78,123 +128,126 @@ export default function Cadastro({ navigation }) {
   };
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      enableOnAndroid={true}
-      extraScrollHeight={20} // Altura adicional para garantir que os campos não fiquem escondidos
-    >
-      <InputField
-        label="Nome"
-        placeholder="Digite seu nome"
-        value={nome}
-        onChangeText={setNome}
-        iconName="person"
-        iconType="MaterialIcons"
-        error={erros.nome}
-        containerStyle={{ marginTop: -10 }}
-        inputStyle={{ height: 40 }}
-      />
-      <InputField
-        label="E-mail"
-        placeholder="Digite seu e-mail"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        iconName="email"
-        iconType="MaterialIcons"
-        error={erros.email}
-        inputStyle={{ height: 40 }}
-      />
-      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-        <InputField
-          label="Data de nascimento"
-          placeholder="dd/mm/aaaa"
-          value={formatarData(dataNascimento)}
-          editable={false}
-          iconName="calendar-today"
-          iconType="MaterialIcons"
-          error={erros.dataNascimento}
-          inputStyle={{ height: 40 }}
-        />
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          value={dataNascimento || new Date(2000, 0, 1)}
-          mode="date"
-          display="default"
-          onChange={(event, selectedDate) => {
-            setShowDatePicker(false);
-            if (selectedDate) setDataNascimento(selectedDate);
-          }}
-        />
-      )}
-      <InputField
-        label="Senha"
-        placeholder="Mínimo de 10 caracteres"
-        value={senha}
-        onChangeText={setSenha}
-        secureTextEntry={!senhaVisible}
-        showPasswordToggle
-        onTogglePassword={() => setSenhaVisible(!senhaVisible)}
-        passwordVisible={senhaVisible}
-        tooltip={{
-          onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
-          iconRef: senhaTooltipRef,
-        }}
-        error={erros.senha}
-        inputStyle={{ height: 40 }}
-      />
-
-      <Tooltip
-        visible={mostrarTooltipSenha}
-        onClose={() => setMostrarTooltipSenha(false)}
-        text="A senha deve ter entre 10 e 20 caracteres para garantir sua segurança."
-        position={{ top: 320, left: 50 }} // ajuste conforme necessário
-      />
-
-      <InputField
-        label="Confirmar senha"
-        placeholder="Digite a senha novamente"
-        value={confirmarSenha}
-        onChangeText={setConfirmarSenha}
-        secureTextEntry={!confirmarSenhaVisible}
-        showPasswordToggle
-        onTogglePassword={() =>
-          setConfirmarSenhaVisible(!confirmarSenhaVisible)
-        }
-        passwordVisible={confirmarSenhaVisible}
-        error={erros.confirmarSenha}
-        inputStyle={{ height: 40 }}
-      />
-
-      <Checkbox
-        label={
-          <Text style={{ fontSize: 14, color: theme.textPrimary }}>
-            Eu concordo com os{' '}
-            <Text
-              style={styles.link}
-              onPress={() => navigation.navigate('TermosCondicoes')}>
-              Termos & Condições
-            </Text>{' '}
-            e com a{' '}
-            <Text
-              style={styles.link}
-              onPress={() => navigation.navigate('PoliticaPrivacidade')}>
-              Política de Privacidade
-            </Text>{' '}
-            do <Text style={styles.softBrand}>mecuido</Text>.
-          </Text>
-        }
-        checked={aceitoTermos}
-        onPress={() => setAceitoTermos(!aceitoTermos)}
-        error={erros.termos}
-      />
-      <BotaoDestaque
-        onPress={handleCadastrar}
-        texto="Criar conta"
-        style={{ marginTop: 10, alignSelf: 'center', width: '100%' }}
-      />
-    </KeyboardAwareScrollView>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ paddingBottom: 40 }}>
+          <InputField
+            label="Nome"
+            placeholder="Digite seu nome"
+            value={nome}
+            onChangeText={setNome}
+            iconName="person"
+            iconType="MaterialIcons"
+            error={erros.nome}
+            containerStyle={{ marginTop: 10 }}
+            inputStyle={{ height: 40 }}
+          />
+          <InputField
+            label="E-mail"
+            placeholder="Digite seu e-mail"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            iconName="email"
+            iconType="MaterialIcons"
+            error={erros.email}
+            inputStyle={{ height: 40 }}
+          />
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <InputField
+              label="Data de nascimento"
+              placeholder="dd/mm/aaaa"
+              value={formatarData(dataNascimento)}
+              editable={false}
+              iconName="calendar-today"
+              iconType="MaterialIcons"
+              error={erros.dataNascimento}
+              inputStyle={{ height: 40 }}
+            />
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={dataNascimento || new Date(2000, 0, 1)}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) setDataNascimento(selectedDate);
+              }}
+            />
+          )}
+          <InputField
+            label="Senha"
+            placeholder="Mínimo de 10 caracteres"
+            value={senha}
+            onChangeText={setSenha}
+            secureTextEntry={!senhaVisible}
+            showPasswordToggle
+            onTogglePassword={() => setSenhaVisible(!senhaVisible)}
+            passwordVisible={senhaVisible}
+            tooltip={{
+              onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
+              iconRef: senhaTooltipRef,
+            }}
+            error={erros.senha}
+            inputStyle={{ height: 40 }}
+          />
+          <Tooltip
+            visible={mostrarTooltipSenha}
+            onClose={() => setMostrarTooltipSenha(false)}
+            text="A senha deve ter entre 10 e 20 caracteres para garantir sua segurança."
+            position={{ top: 320, left: 50 }}
+          />
+          <InputField
+            label="Confirmar senha"
+            placeholder="Digite a senha novamente"
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
+            secureTextEntry={!confirmarSenhaVisible}
+            showPasswordToggle
+            onTogglePassword={() =>
+              setConfirmarSenhaVisible(!confirmarSenhaVisible)
+            }
+            passwordVisible={confirmarSenhaVisible}
+            error={erros.confirmarSenha}
+            inputStyle={{ height: 40 }}
+          />
+          <Checkbox
+            label={
+              <Text style={{ fontSize: 14, color: theme.textPrimary }}>
+                Eu concordo com os{' '}
+                <Text
+                  style={styles.link}
+                  onPress={() => navigation.navigate('TermosCondicoes')}>
+                  Termos & Condições
+                </Text>{' '}
+                e com a{' '}
+                <Text
+                  style={styles.link}
+                  onPress={() => navigation.navigate('PoliticaPrivacidade')}>
+                  Política de Privacidade
+                </Text>{' '}
+                do <Text style={styles.softBrand}>mecuido</Text>.
+              </Text>
+            }
+            checked={aceitoTermos}
+            onPress={() => setAceitoTermos(!aceitoTermos)}
+            error={erros.termos}
+          />
+          <BotaoDestaque
+            onPress={handleCadastrar}
+            texto="Criar conta"
+            style={{ marginTop: 10, alignSelf: 'center', width: '100%' }}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

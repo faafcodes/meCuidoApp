@@ -49,9 +49,9 @@ export default function getStyles(theme) {
       flex: 1,
     },
     label: {
-      fontSize: 14,
+      fontSize: 18,
       fontWeight: '600',
-      color: theme.textSecondary,
+      color: theme.subtitle,
       marginBottom: 4,
     },
     value: {
@@ -60,8 +60,9 @@ export default function getStyles(theme) {
       color: theme.brandMain,
     },
     description: {
-      fontSize: 12,
-      color: theme.textSecondary,
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: theme.buttonPlus,
       marginTop: 2,
     },
     image: {
@@ -101,14 +102,14 @@ export default function getStyles(theme) {
       color: theme.textSecondary,
     },
     valueImcNumber: {
-      fontSize: 26,
+      fontSize: 30,
       fontWeight: 'bold',
-      color: theme.primary,
+      color: theme.brandMain,
     },
     valueImcUnit: {
-      fontSize: 18,
-      fontWeight: 'normal',
-      color: theme.textSecondary,
+      fontSize: 25,
+      fontWeight: 'bold',
+      color: theme.brandMain,
     },
     valueSonoNumber: {
       fontSize: 28,

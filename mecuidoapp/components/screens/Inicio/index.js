@@ -29,7 +29,7 @@ export default function Inicio({ navigation }) {
 
       <BotaoDestaque texto="Entrar" onPress={() => navigation.navigate('Login')} />
 
-      <LinkDestaque texto="Criar Conta" onPress={() => navigation.navigate('Cadastro')} />
+      <LinkDestaque texto="Criar conta" onPress={() => navigation.navigate('Cadastro')} />
 
       <Versao numero="1.0" />
     </View>

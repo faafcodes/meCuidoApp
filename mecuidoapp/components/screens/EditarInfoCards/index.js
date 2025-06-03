@@ -17,7 +17,66 @@ export default function EditarInfoAgua({ navigation }) {
   const [agua, setAgua] = useState(user?.agua ? String(user.agua) : '');
   const [sono, setSono] = useState(user?.sono ? String(user.sono) : '');
 
+  const [erro, setErro] = useState({});
+
+const validar = () => {
+  const erros = {};
+
+  const pesoNum = Number(peso);
+  const alturaNum = Number(altura);
+  const aguaNum = Number(agua);
+  const sonoNum = Number(sono);
+
+  // Peso
+  if (!peso) {
+    erros.peso = 'O peso é obrigatório.';
+  } else if (isNaN(pesoNum) || pesoNum <= 0) {
+    erros.peso = 'Informe um valor numérico válido para o peso.';
+  } else if (pesoNum < 30) {
+    erros.peso = '30kg? Você é super-herói ou está virando folha?';
+  } else if (pesoNum > 300) {
+    erros.peso = '300kg? Você é um monstro da força ou só exagerou?';
+  }
+
+  // Altura
+  if (!altura) {
+    erros.altura = 'A altura é obrigatória.';
+  } else if (isNaN(alturaNum) || alturaNum <= 0) {
+    erros.altura = 'Informe um valor numérico válido para a altura.';
+  } else if (alturaNum < 50) {
+    erros.altura = 'Menos de 50cm? Você é um hobbit?';
+  } else if (alturaNum > 300) {
+    erros.altura = 'Mais de 3 metros? Você é um Avatar?';
+  }
+
+  // Água
+  if (!agua) {
+    erros.agua = 'Informe a quantidade de copos de água.';
+  } else if (isNaN(aguaNum) || aguaNum < 0) {
+    erros.agua = 'Informe um número válido de copos.';
+  } else if (aguaNum === 0) {
+    erros.agua = 'Zero copos? Certeza que não é um cacto?';
+  } else if (aguaNum > 50) {
+    erros.agua = '50 copos? Você é peixe ou está tentando inundar a casa?';
+  }
+
+  // Sono
+  if (!sono) {
+    erros.sono = 'Informe a quantidade de horas de sono.';
+  } else if (isNaN(sonoNum) || sonoNum < 0) {
+    erros.sono = 'Informe um número válido de horas.';
+  } else if (sonoNum > 24) {
+    erros.sono = 'Mais de 24 horas? Dorme em outro fuso horário?';
+  }
+
+  setErro(erros);
+  return Object.keys(erros).length === 0;
+};
+
+
   const handleSalvar = async () => {
+    if (!validar()) return;
+
     const dadosAtualizados = {};
 
     if (peso && peso !== String(user.peso))
@@ -54,6 +113,8 @@ export default function EditarInfoAgua({ navigation }) {
           keyboardType="numeric"
           containerStyle={{ marginBottom: 10 }}
         />
+        {erro.agua && <Text style={styles.error}>{erro.agua}</Text>}
+
         <View style={styles.subtituloContainer}>
           <MaterialIcons
             name="compare-arrows"
@@ -73,6 +134,7 @@ export default function EditarInfoAgua({ navigation }) {
           onChangeText={setPeso}
           keyboardType="numeric"
         />
+        {erro.peso && <Text style={styles.error}>{erro.peso}</Text>}
 
         <InputField
           label="Altura (cm)"
@@ -81,6 +143,7 @@ export default function EditarInfoAgua({ navigation }) {
           onChangeText={setAltura}
           keyboardType="numeric"
         />
+        {erro.altura && <Text style={styles.error}>{erro.altura}</Text>}
 
         <InputField
           label="Horas de sono"
@@ -89,6 +152,7 @@ export default function EditarInfoAgua({ navigation }) {
           onChangeText={setSono}
           keyboardType="numeric"
         />
+        {erro.sono && <Text style={styles.error}>{erro.sono}</Text>}
 
         <BotaoEntrar
           texto="Salvar"

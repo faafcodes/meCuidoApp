@@ -6,7 +6,8 @@ export default function getStyles(theme) {
   const greetingCardWidth = width * 0.85;
   const greetingCardHeight = width * 0.3;
   const leafWidth = greetingCardWidth * 0.45;
-  const leafHeight =greetingCardHeight * 0.9;
+  const leafHeight = greetingCardHeight * 0.9;
+  const dividerHeight = height * 0.04;
 
   return StyleSheet.create({
     container: {
@@ -56,7 +57,7 @@ export default function getStyles(theme) {
       width: '90%',
       height: 12, // ajuste conforme a altura real da imagem
       alignSelf: 'center',
-      marginVertical: 40,
+      marginVertical: dividerHeight,
     },
 
     sectionHeader: {

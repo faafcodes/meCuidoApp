@@ -1,5 +1,14 @@
 import React, { useContext, useRef, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  SafeAreaView,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -47,11 +56,50 @@ export default function EditarInfo({ navigation }) {
 
   const validar = () => {
     const erros = {};
-    if (senha && senha.length < 10)
-      erros.senha = 'Senha deve ter ao menos 10 caracteres';
-    if (senha && senha !== confirmarSenha)
-      erros.confirmarSenha = 'As senhas não coincidem';
-    if (!sexo) erros.sexo = 'Selecione o sexo';
+
+    // Validação do nome
+    if (!nome.trim()) {
+      erros.nome = 'Cadê seu nome, sumiu no vento?';
+    } else if (nome.length < 3) {
+      erros.nome = 'Nome muito curto! Você é um personagem de desenho?';
+    } else if (nome.length > 50) {
+      erros.nome = 'Wow! Seu nome cabe numa etiqueta de bagagem?';
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+      erros.email =
+        'Esse email não parece real... Tem certeza que não é um meme?';
+    } else if (email.length > 50) {
+      erros.email =
+        'Email longo demais, parece que você quer mandar um livro inteiro!';
+    }
+
+    // Validação da data de nascimento absurda
+    if (!dataNascimento) {
+      erros.dataNascimento = 'Data de nascimento não pode ficar no limbo!';
+    } else {
+      const ano = dataNascimento.getFullYear();
+      const anoAtual = new Date().getFullYear();
+      if (ano < 1900) {
+        erros.dataNascimento =
+          'Uau, você veio do século passado? Que viagem no tempo!';
+      } else if (ano > anoAtual) {
+        erros.dataNascimento =
+          'Você ainda não nasceu? Calendário confuso, hein?';
+      }
+    }
+
+    if (senha && senha.length < 10) {
+      erros.senha = 'Senha muito curta, segura o jogo aí!';
+    }
+    if (senha && senha !== confirmarSenha) {
+      erros.confirmarSenha = 'As senhas não batem, tipo par e ímpar!';
+    }
+    if (!sexo) {
+      erros.sexo =
+        'Escolha um sexo, essa decisão não vai te pegar desprevenido!';
+    }
+
     setErro(erros);
     return Object.keys(erros).length === 0;
   };
@@ -92,136 +140,148 @@ export default function EditarInfo({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <InputField
-          label="Nome"
-          placeholder="Seu nome"
-          value={nome}
-          onChangeText={setNome}
-          iconName="person"
-          containerStyle={{ marginTop: 0 }}
-          inputStyle={{ height: 40 , width: '100%'}}
-        />
-
-        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          keyboardShouldPersistTaps="handled">
           <InputField
-            label="Data de nascimento"
-            placeholder="dd/mm/aaaa"
-            value={formatarData(dataNascimento)}
-            editable={false}
-            iconName="calendar-today"
-            iconType="MaterialIcons"
+            label="Nome"
+            placeholder="Seu nome"
+            value={nome}
+            onChangeText={setNome}
+            iconName="person"
+            containerStyle={{ marginTop: 0 }}
+            inputStyle={{ height: 40, width: '100%' }}
+          />
+
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <InputField
+              label="Data de nascimento"
+              placeholder="dd/mm/aaaa"
+              value={formatarData(dataNascimento)}
+              editable={false}
+              iconName="calendar-today"
+              iconType="MaterialIcons"
+              containerStyle={{ marginBottom: 22 }}
+              inputStyle={{ height: 40 }}
+            />
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={dataNascimento || new Date(2000, 0, 1)}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) setDataNascimento(selectedDate);
+              }}
+            />
+          )}
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 16,
+            }}>
+            <Text style={styles.label}>Sexo</Text>
+            <TouchableOpacity
+              onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
+              <MaterialIcons
+                name="info-outline"
+                size={20}
+                color={theme.iconColor}
+                style={{ marginLeft: 6 }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <DropDownPicker
+            open={openSexo}
+            value={sexo}
+            items={[
+              { label: 'Masculino', value: 'Masculino' },
+              { label: 'Feminino', value: 'Feminino' },
+            ]}
+            setOpen={setOpenSexo}
+            setValue={setSexo}
+            placeholder="Selecionar"
+            style={styles.dropdown}
+            textStyle={styles.dropdownText}
+            dropDownContainerStyle={styles.dropdownContainer}
+          />
+          {erro.sexo && <Text style={styles.error}>{erro.sexo}</Text>}
+          <Tooltip
+            visible={mostrarTooltipSexo}
+            onClose={() => setMostrarTooltipSexo(false)}
+            text="Para garantir resultados mais confiáveis, selecione o sexo conforme seu perfil hormonal atual. Caso esteja em tratamento hormonal, escolha o sexo correspondente ao tratamento. Caso contrário, selecione o sexo atribuído no nascimento."
+            position={{ top: 150, left: 30 }} // ajuste conforme necessário
+          />
+
+          <InputField
+            label="E-mail"
+            placeholder="email@exemplo.com"
+            value={email}
+            onChangeText={setEmail}
+            iconName="mail"
+            keyboardType="email-address"
             containerStyle={{ marginBottom: 22 }}
             inputStyle={{ height: 40 }}
           />
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={dataNascimento || new Date(2000, 0, 1)}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false);
-              if (selectedDate) setDataNascimento(selectedDate);
+
+          <InputField
+            label="Senha"
+            placeholder="********"
+            value={senha}
+            onChangeText={setSenha}
+            secureTextEntry={!senhaVisible}
+            showPasswordToggle
+            onTogglePassword={() => setSenhaVisible(!senhaVisible)}
+            passwordVisible={senhaVisible}
+            tooltip={{
+              onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
             }}
+            error={erro.senha}
+            containerStyle={{ marginBottom: 22 }}
+            inputStyle={{ height: 40 }}
           />
-        )}
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 16,
-          }}>
-          <Text style={styles.label}>Sexo</Text>
-          <TouchableOpacity
-            onPress={() => setMostrarTooltipSexo(!mostrarTooltipSexo)}>
-            <MaterialIcons
-              name="info-outline"
-              size={20}
-              color={theme.iconColor}
-              style={{ marginLeft: 6 }}
+          <Tooltip
+            visible={mostrarTooltipSenha}
+            onClose={() => setMostrarTooltipSenha(false)}
+            text="A senha deve ter entre 10 e 20 caracteres para garantir sua segurança."
+            position={{ top: 420, left: 30 }} // ajuste conforme necessário
+          />
+
+          <InputField
+            label="Confirmar senha"
+            placeholder="********"
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
+            secureTextEntry={!confirmarSenhaVisible}
+            showPasswordToggle
+            onTogglePassword={() =>
+              setConfirmarSenhaVisible(!confirmarSenhaVisible)
+            }
+            passwordVisible={confirmarSenhaVisible}
+            error={erro.confirmarSenha}
+            containerStyle={{ marginBottom: 15 }}
+            inputStyle={{ height: 40 }}
+          />
+
+          <View style={styles.botaoContainer}>
+            <BotaoDestaque
+              texto="Alterar dados"
+              onPress={handleSalvar}
+              style={{ marginTop: 0, alignSelf: 'center', width: '100%' }}
             />
-          </TouchableOpacity>
-        </View>
-
-        <DropDownPicker
-          open={openSexo}
-          value={sexo}
-          items={[
-            { label: 'Masculino', value: 'Masculino' },
-            { label: 'Feminino', value: 'Feminino' },
-          ]}
-          setOpen={setOpenSexo}
-          setValue={setSexo}
-          placeholder="Selecionar"
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropDownContainerStyle={styles.dropdownContainer}
-        />
-        {erro.sexo && <Text style={styles.error}>{erro.sexo}</Text>}
-        <Tooltip
-          visible={mostrarTooltipSexo}
-          onClose={() => setMostrarTooltipSexo(false)}
-          text="Para garantir resultados mais confiáveis, selecione o sexo conforme seu perfil hormonal atual. Caso esteja em tratamento hormonal, escolha o sexo correspondente ao tratamento. Caso contrário, selecione o sexo atribuído no nascimento."
-          position={{ top: 150, left: 30 }} // ajuste conforme necessário
-        />
-
-        <InputField
-          label="E-mail"
-          placeholder="email@exemplo.com"
-          value={email}
-          onChangeText={setEmail}
-          iconName="mail"
-          keyboardType="email-address"
-          containerStyle={{ marginBottom: 22 }}
-          inputStyle={{ height: 40 }}
-        />
-
-        <InputField
-          label="Senha"
-          placeholder="********"
-          value={senha}
-          onChangeText={setSenha}
-          secureTextEntry={!senhaVisible}
-          showPasswordToggle
-          onTogglePassword={() => setSenhaVisible(!senhaVisible)}
-          passwordVisible={senhaVisible}
-          tooltip={{
-            onToggle: () => setMostrarTooltipSenha(!mostrarTooltipSenha),
-          }}
-          error={erro.senha}
-          containerStyle={{ marginBottom: 22 }}
-          inputStyle={{ height: 40 }}
-        />
-
-        <Tooltip
-          visible={mostrarTooltipSenha}
-          onClose={() => setMostrarTooltipSenha(false)}
-          text="A senha deve ter entre 10 e 20 caracteres para garantir sua segurança."
-          position={{ top: 420, left: 30 }} // ajuste conforme necessário
-        />
-
-        <InputField
-          label="Confirmar senha"
-          placeholder="********"
-          value={confirmarSenha}
-          onChangeText={setConfirmarSenha}
-          secureTextEntry={!confirmarSenhaVisible}
-          showPasswordToggle
-          onTogglePassword={() =>
-            setConfirmarSenhaVisible(!confirmarSenhaVisible)
-          }
-          passwordVisible={confirmarSenhaVisible}
-          error={erro.confirmarSenha}
-          containerStyle={{ marginBottom: 15 }}
-          inputStyle={{ height: 40 }}
-        />
-
-        <View style={styles.botaoContainer}>
-          <BotaoDestaque texto="Alterar dados" onPress={handleSalvar} style={{marginTop: 0, alignSelf: 'center', width: '100%'}}/>
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

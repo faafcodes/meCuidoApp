@@ -69,52 +69,36 @@ export default function CardCarrossel() {
   const aguaRecomendadaLitros = (aguaRecomendadaMl / 1000).toFixed(2);
 
   const imc = peso && altura ? (peso / (altura / 100) ** 2).toFixed(1) : '--';
-  const imcIdealMin = altura ? (18.5 * (altura / 100) ** 2).toFixed(1) : '--';
-  const imcIdealMax = altura ? (24.9 * (altura / 100) ** 2).toFixed(1) : '--';
+  const imcIdealMin = '18.5';
+  const imcIdealMax = '24.9';
 
   const imcCategoria =
     imc === '--'
       ? '--'
-      : idade >= 18
-      ? imc < 18.5
-        ? 'Abaixo do peso normal'
-        : imc <= 24.9
-        ? 'Peso normal'
-        : imc <= 29.9
-        ? 'Sobrepeso'
-        : imc <= 34.9
-        ? 'Obesidade Classe I'
-        : imc <= 39.9
-        ? 'Obesidade Classe II'
-        : 'Obesidade Classe III'
-      : sexo === 'M'
-      ? idade <= 12
-        ? imc > 19.9
-          ? 'Obesidade'
-          : imc > 16.9
-          ? 'Sobrepeso'
-          : 'Normal'
-        : imc > 22.7
-        ? 'Obesidade'
-        : imc > 19.9
-        ? 'Sobrepeso'
-        : 'Normal'
-      : idade <= 12
-      ? imc > 18.9
-        ? 'Obesidade'
-        : imc > 16.9
-        ? 'Sobrepeso'
-        : 'Normal'
-      : imc > 23.9
-      ? 'Obesidade'
-      : imc > 20.9
+      : imc < 18.5
+      ? 'Abaixo do peso normal'
+      : imc <= 24.9
+      ? 'Peso normal'
+      : imc <= 29.9
       ? 'Sobrepeso'
-      : 'Normal';
+      : imc <= 34.9
+      ? 'Obesidade Classe I'
+      : imc <= 39.9
+      ? 'Obesidade Classe II'
+      : 'Obesidade Classe III';
 
-  const sonoCategoria =
-    sono >= sonoIdeal.min && sono <= sonoIdeal.max
-      ? 'Suficiente'
-      : 'Insuficiente';
+let sonoCategoria = '--';
+
+if (sono === '--') {
+  sonoCategoria = '--';
+} else if (sono < sonoIdeal.min) {
+  sonoCategoria = 'Insuficiente';
+} else if (sono > sonoIdeal.max) {
+  sonoCategoria = 'Excessivo';
+} else {
+  sonoCategoria = 'Suficiente';
+}
+
 
   const aguaLitros = aguaConsumida ? (aguaConsumida * 0.25).toFixed(1) : '--';
 
@@ -177,9 +161,20 @@ export default function CardCarrossel() {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 12,
+              marginBottom: 8,
             }}>
-            <Text style={styles.cardTitle}>HOJE</Text>
+            {/* Ícone + Texto HOJE */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons
+                name="calendar-today"
+                size={25}
+                color={theme.textPrimary}
+                style={{ marginRight: 6 }}
+              />
+              <View style={{ marginTop: 8 }}>
+                <Text style={styles.cardTitle}>HOJE</Text>
+              </View>
+            </View>
 
             {/* Botão de editar */}
             <TouchableOpacity
@@ -189,7 +184,21 @@ export default function CardCarrossel() {
           </View>
           <View style={styles.body}>
             <View style={styles.infoSection}>
-              <Text style={styles.label}>Ideal por dia</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 4,
+                }}>
+                <MaterialIcons
+                  name="my-location"
+                  size={25}
+                  color={theme.textPrimary}
+                />
+                <Text style={[styles.label, { marginLeft: 6 }]}>
+                  Ideal por dia
+                </Text>
+              </View>
               <Text style={styles.value}>
                 <Text style={styles.valueAguaNumber}>
                   {aguaRecomendadaLitros}
@@ -197,7 +206,22 @@ export default function CardCarrossel() {
                 <Text style={styles.valueAguaUnit}>litros</Text>
               </Text>
 
-              <Text style={styles.label}>Atual no dia</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 4,
+                  marginTop: 25,
+                }}>
+                <MaterialIcons
+                  name="local-drink"
+                  size={25}
+                  color={theme.textPrimary}
+                />
+                <Text style={[styles.label, { marginLeft: 6 }]}>
+                  Atual no dia
+                </Text>
+              </View>
               <Text style={styles.value}>
                 <Text style={styles.valueAguaNumber}>{aguaConsumida}</Text>{' '}
                 <Text style={styles.valueAguaUnit}>copos</Text>
@@ -218,9 +242,20 @@ export default function CardCarrossel() {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 12,
+              marginBottom: 8,
             }}>
-            <Text style={styles.cardTitle}>HOJE</Text>
+            {/* Ícone + Texto HOJE */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons
+                name="calendar-today"
+                size={25}
+                color={theme.textPrimary}
+                style={{ marginRight: 6 }}
+              />
+              <View style={{ marginTop: 8 }}>
+                <Text style={styles.cardTitle}>HOJE</Text>
+              </View>
+            </View>
 
             {/* Botão de editar */}
             <TouchableOpacity
@@ -230,15 +265,40 @@ export default function CardCarrossel() {
           </View>
           <View style={styles.body}>
             <View style={styles.infoSection}>
-              <Text style={styles.label}>IMC ideal</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 4,
+                }}>
+                <MaterialIcons
+                  name="my-location"
+                  size={25}
+                  color={theme.textPrimary}
+                />
+                <Text style={[styles.label, { marginLeft: 6 }]}>IMC ideal</Text>
+              </View>
               <Text style={styles.value}>
-                <Text style={styles.valueImcNumber}>{imcIdealMin}</Text>{' '}
+                <Text style={styles.valueImcUnit}>{imcIdealMin}</Text>{' '}
                 <Text style={styles.valueImcUnit}>a</Text>{' '}
-                <Text style={styles.valueImcNumber}>{imcIdealMax}</Text>
+                <Text style={styles.valueImcUnit}>{imcIdealMax}</Text>
               </Text>
               <Text style={styles.description}>Peso normal</Text>
 
-              <Text style={styles.label}>IMC atual</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 4,
+                  marginTop: 25,
+                }}>
+                <MaterialIcons
+                  name="monitor-weight"
+                  size={25}
+                  color={theme.textPrimary}
+                />
+                <Text style={[styles.label, { marginLeft: 6 }]}>IMC atual</Text>
+              </View>
               <Text style={styles.value}>
                 <Text style={styles.valueImcNumber}>{imc}</Text>
               </Text>
@@ -255,9 +315,20 @@ export default function CardCarrossel() {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 12,
+              marginBottom: 8,
             }}>
-            <Text style={styles.cardTitle}>HOJE</Text>
+            {/* Ícone + Texto HOJE */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons
+                name="calendar-today"
+                size={25}
+                color={theme.textPrimary}
+                style={{ marginRight: 6 }}
+              />
+              <View style={{ marginTop: 8 }}>
+                <Text style={styles.cardTitle}>HOJE</Text>
+              </View>
+            </View>
 
             {/* Botão de editar */}
             <TouchableOpacity
@@ -267,7 +338,21 @@ export default function CardCarrossel() {
           </View>
           <View style={styles.body}>
             <View style={styles.infoSection}>
-              <Text style={styles.label}>Sono ideal</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 4,
+                }}>
+                <MaterialIcons
+                  name="my-location"
+                  size={25}
+                  color={theme.textPrimary}
+                />
+                <Text style={[styles.label, { marginLeft: 6 }]}>
+                  Sono ideal
+                </Text>
+              </View>
               <Text style={styles.value}>
                 <Text style={styles.valueSonoNumber}>{sonoIdeal.min}</Text> a{' '}
                 <Text style={styles.valueSonoNumber}>{sonoIdeal.max}</Text>{' '}
@@ -275,7 +360,22 @@ export default function CardCarrossel() {
               </Text>
               <Text style={styles.description}>{sonoIdeal.desc}</Text>
 
-              <Text style={styles.label}>Sono atual</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 4,
+                  marginTop: 25,
+                }}>
+                <MaterialIcons
+                  name="nights-stay"
+                  size={25}
+                  color={theme.textPrimary}
+                />
+                <Text style={[styles.label, { marginLeft: 6 }]}>
+                  Sono atual
+                </Text>
+              </View>
               <Text style={styles.value}>
                 <Text style={styles.valueSonoNumber}>{sono}</Text>{' '}
                 <Text style={styles.valueSonoUnit}>horas</Text>

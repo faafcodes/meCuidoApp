@@ -6,7 +6,8 @@ export default function getStyles(theme) {
       flex: 1,
       backgroundColor: theme.background,
       paddingHorizontal: 30,
-      paddingTop: 40,
+      paddingTop: 20,
+      paddingBottom: 20,
     },
     title: {
       fontSize: 22,
