@@ -10,6 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { ThemeContext } from '../../../context/ThemeContext';
 import { UserContext } from '../../../context/UserContext';
@@ -105,41 +106,45 @@ export default function Cadastro({ navigation }) {
     return Object.keys(novosErros).length === 0;
   };
 
-  const handleCadastrar = async () => {
-    if (validar()) {
-      try {
-        const novoUsuario = {
-          nome: nome.trim(),
-          email: email.trim().toLowerCase(),
-          dataNascimento: dataNascimento ? dataNascimento.toISOString() : '',
-          senha,
-          peso: 0,
-          altura: 0,
-          agua: 0,
-          sono: 0,
-        };
+const handleCadastrar = async () => {
+  const valido = validar();
+  if (!valido) return; // <<< Garante que não chama cadastrarUsuario se houver erro
 
-        await cadastrarUsuario(novoUsuario);
-        navigation.navigate('InformacoesIniciais');
-      } catch (error) {
-        Alert.alert('Erro', error.message || 'Erro ao cadastrar usuário.');
-      }
-    }
-  };
+  try {
+    const novoUsuario = {
+      nome: nome.trim(),
+      email: email.trim().toLowerCase(),
+      dataNascimento: dataNascimento ? dataNascimento.toISOString() : '',
+      senha,
+      peso: 0,
+      altura: 0,
+      agua: 0,
+      sono: 0,
+    };
+
+    await cadastrarUsuario(novoUsuario);
+    navigation.navigate('InformacoesIniciais', { usuario: novoUsuario });
+  } catch (error) {
+    Alert.alert('Erro', error.message || 'Erro ao cadastrar usuário.');
+  }
+};
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        extraScrollHeight={40}
+        enableOnAndroid={true}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 40 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ paddingBottom: 40 }}>
           <InputField
-            label="Nome"
-            placeholder="Digite seu nome"
+            label="Nome" 
+            placeholder="Digite como quer ser chamado"
             value={nome}
             onChangeText={setNome}
             iconName="person"
@@ -247,7 +252,7 @@ export default function Cadastro({ navigation }) {
             style={{ marginTop: 10, alignSelf: 'center', width: '100%' }}
           />
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

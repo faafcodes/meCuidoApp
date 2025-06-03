@@ -82,11 +82,18 @@ export function UserProvider({ children }) {
     sono,
     dataNascimento,
   }) => {
+    // Validação mínima antes de criar a conta (reforço de segurança)
+    if (!email || !senha || !nome || !dataNascimento) {
+      throw new Error('Dados obrigatórios ausentes. Verifique o formulário.');
+    }
+
     let userCredential;
     try {
+      // Cria a conta no Firebase Auth
       userCredential = await auth.createUserWithEmailAndPassword(email, senha);
       const uid = userCredential.user.uid;
 
+      // Salva os dados complementares no Realtime Database
       await database.ref(`users/${uid}`).set({
         nome,
         peso,
@@ -97,10 +104,11 @@ export function UserProvider({ children }) {
         dataNascimento,
       });
 
-      setUser({ uid, email, nome, peso, altura, agua, sono });
+      // Atualiza o estado local do usuário
+      setUser({ uid, email, nome, peso, altura, agua, sono, dataNascimento });
     } catch (error) {
-      // Se usuário foi criado mas deu erro ao salvar dados, apaga o usuário criado
-      if (userCredential && userCredential.user) {
+      // Se a criação do Auth foi feita mas falhou na gravação do DB, apaga o usuário
+      if (userCredential?.user) {
         await userCredential.user.delete();
       }
       const mensagem = traduzirErroFirebase(error);
@@ -110,7 +118,10 @@ export function UserProvider({ children }) {
 
   const login = async (email, senha) => {
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(email, senha);
+      const userCredential = await auth.signInWithEmailAndPassword(
+        email,
+        senha
+      );
       const uid = userCredential.user.uid;
 
       const snapshot = await database.ref(`users/${uid}`).once('value');
@@ -148,8 +159,7 @@ export function UserProvider({ children }) {
         login,
         logout,
         atualizarUsuario,
-      }}
-    >
+      }}>
       {children}
     </UserContext.Provider>
   );

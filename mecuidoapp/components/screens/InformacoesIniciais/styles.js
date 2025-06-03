@@ -42,7 +42,7 @@ export default function getStyles(theme) {
       borderColor: theme.brandSoft,
       borderRadius: 6,
       padding: 12,
-      marginBottom: 10,
+
       color: theme.textPrimary,
     },
     error: {

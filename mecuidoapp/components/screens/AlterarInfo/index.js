@@ -31,9 +31,19 @@ export default function EditarInfo({ navigation }) {
   const [email, setEmail] = useState(user?.email || '');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [dataNascimento, setDataNascimento] = useState(
-    user?.dataNascimento ? new Date(user.dataNascimento) : null
-  );
+  const [dataNascimento, setDataNascimento] = useState(() => {
+    if (user?.dataNascimento) {
+      const parsed = new Date(user.dataNascimento);
+      const localDate = new Date(
+        parsed.getUTCFullYear(),
+        parsed.getUTCMonth(),
+        parsed.getUTCDate()
+      );
+      return isNaN(localDate.getTime()) ? null : localDate;
+    }
+    return null;
+  });
+
   const [sexo, setSexo] = useState(user?.sexo || 'Masculino');
 
   const [senhaVisible, setSenhaVisible] = useState(false);

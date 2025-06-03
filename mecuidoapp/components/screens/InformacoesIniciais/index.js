@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useRef,
-  useCallback,
-} from 'react';
+import React, { useState, useContext, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -40,6 +35,9 @@ export default function InformacoesIniciais({ navigation }) {
   const [erro, setErro] = useState({});
   const [mostrarTooltipSexo, setMostrarTooltipSexo] = useState(false);
   const [mostrarTooltipSenha, setMostrarTooltipSenha] = useState(false);
+  const [dataNascimento, setDataNascimento] = useState(
+    user.dataNascimento ? new Date(user.dataNascimento) : null
+  );
 
   const validarCampos = () => {
     const erros = {};
@@ -97,6 +95,7 @@ export default function InformacoesIniciais({ navigation }) {
         peso: parseFloat(peso),
         sono: parseFloat(sono),
         agua: parseInt(agua, 10),
+        dataNascimento: dataNascimento ? dataNascimento.toISOString() : '', 
       };
 
       setUser(dadosCompletos);
@@ -231,8 +230,8 @@ export default function InformacoesIniciais({ navigation }) {
           error={erro.agua}
         />
 
-        <View style={{ marginTop: 16 }}>
-          <BotaoDestaque texto="Continuar" onPress={handleContinuar} />
+        <View>
+          <BotaoDestaque texto="Continuar" onPress={handleContinuar} style={{ alignSelf: 'center', width: '100%' }}/>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
